@@ -1,2 +1,0 @@
-# Zabbix_Template_tool
-把mib文件转换为zabbix模板
