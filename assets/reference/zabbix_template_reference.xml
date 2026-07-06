@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Zabbix 6.4 标准模板参考结构 (Lenovo SR660_V2)
+  根节点 version 固定为 6.4
+  文档顶层顺序: groups → templates → template → items → discovery_rules → macros
+-->
+<zabbix_export>
+    <version>6.4</version>
+    <date>2025-06-01T08:00:00Z</date>
+    <groups>
+        <group>
+            <uuid>a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6</uuid>
+            <name>服务器模板</name>
+        </group>
+        <group>
+            <uuid>b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6a7</uuid>
+            <name>监控模板</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>c3d4e5f6a7b8c9d0e1f2a3b4c5d6a7b8</uuid>
+            <template>LW_Template_Lenovo_SR660_V2</template>
+            <name>Lenovo SR660 V2 服务器模板</name>
+            <groups>
+                <group>
+                    <name>服务器模板</name>
+                </group>
+                <group>
+                    <name>监控模板</name>
+                </group>
+            </groups>
+            <items>
+                <!--
+                  静态Item示例 (无SNMPINDEX，全局唯一指标)
+                  字段顺序: uuid/name/type/snmp_oid/key/delay/history/trends/value_type/units/tags
+                  value_type: 0=FLOAT, 1=CHAR, 2=LOG, 3=UNSIGNED, 4=TEXT
+                -->
+
+                <!-- 状态类指标: delay=1m, value_type=4(TEXT), trends=0d -->
+                <item>
+                    <uuid>d4e5f6a7b8c9d0e1f2a3b4c5d6a7b8c9</uuid>
+                    <name>整机健康状态</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.1.1.0</snmp_oid>
+                    <key>health.entirety</key>
+                    <delay>1m</delay>
+                    <history>7d</history>
+                    <trends>0d</trends>
+                    <value_type>4</value_type>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>系统</value>
+                        </tag>
+                    </tags>
+                </item>
+
+                <!-- 性能数值类指标: delay=5m, value_type=0(FLOAT), trends=30d, 带units -->
+                <item>
+                    <uuid>e5f6a7b8c9d0e1f2a3b4c5d6a7b8c9d0</uuid>
+                    <name>整机实时功率</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.1.2.0</snmp_oid>
+                    <key>power.current</key>
+                    <delay>5m</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>0</value_type>
+                    <units>W</units>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>系统</value>
+                        </tag>
+                    </tags>
+                </item>
+
+                <!-- 静态信息类指标: delay=1d, value_type=4(TEXT), trends=0d, 无units -->
+                <item>
+                    <uuid>f6a7b8c9d0e1f2a3b4c5d6a7b8c9d0e1</uuid>
+                    <name>设备型号</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.1.3.0</snmp_oid>
+                    <key>system.model</key>
+                    <delay>1d</delay>
+                    <history>7d</history>
+                    <trends>0d</trends>
+                    <value_type>4</value_type>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>系统</value>
+                        </tag>
+                    </tags>
+                </item>
+
+                <item>
+                    <uuid>a7b8c9d0e1f2a3b4c5d6a7b8c9d0e1f2</uuid>
+                    <name>设备序列号</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.1.4.0</snmp_oid>
+                    <key>system.serialnumber</key>
+                    <delay>1d</delay>
+                    <history>7d</history>
+                    <trends>0d</trends>
+                    <value_type>4</value_type>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>系统</value>
+                        </tag>
+                    </tags>
+                </item>
+
+                <item>
+                    <uuid>b8c9d0e1f2a3b4c5d6a7b8c9d0e1f2a3</uuid>
+                    <name>固件版本</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.1.5.0</snmp_oid>
+                    <key>system.firmware</key>
+                    <delay>1d</delay>
+                    <history>7d</history>
+                    <trends>0d</trends>
+                    <value_type>4</value_type>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>系统</value>
+                        </tag>
+                    </tags>
+                </item>
+            </items>
+            <discovery_rules>
+                <!--
+                  自动发现规则示例
+                  字段顺序: uuid/name/type/snmp_oid/key/delay/lifetime/item_prototypes/trigger_prototypes
+                  discovery_rule key格式: 硬件类型.discovery
+                  常规硬件 delay=10m, 电源/风扇 delay=5m
+                  lifetime=0d (不自动删除)
+                -->
+
+                <!-- CPU自动发现规则 -->
+                <discovery_rule>
+                    <uuid>c9d0e1f2a3b4c5d6a7b8c9d0e1f2a3b4</uuid>
+                    <name>CPU</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.2.1</snmp_oid>
+                    <key>cpu.discovery</key>
+                    <delay>10m</delay>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <!--
+                          健康状态 item_prototype (含 trigger_prototype)
+                          value_type=4(TEXT), trends=0d
+                        -->
+                        <item_prototype>
+                            <uuid>d0e1f2a3b4c5d6a7b8c9d0e1f2a3b4c5</uuid>
+                            <name>CPU {#SNMPINDEX} 健康状态</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.2.1.1.{#SNMPINDEX}</snmp_oid>
+                            <key>cpu.health[{#SNMPINDEX}]</key>
+                            <delay>1m</delay>
+                            <history>7d</history>
+                            <trends>0d</trends>
+                            <value_type>4</value_type>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>CPU</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>e1f2a3b4c5d6a7b8c9d0e1f2a3b4c5d6</uuid>
+                                    <expression>last(/LW_Template_Lenovo_SR660_V2/cpu.health[{#SNMPINDEX}])&lt;&gt;"Normal"</expression>
+                                    <name>[CPU] {HOST.NAME} CPU {#SNMPINDEX} 健康状态异常</name>
+                                    <priority>HIGH</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+
+                        <!-- 温度 item_prototype (性能数值类) -->
+                        <item_prototype>
+                            <uuid>f2a3b4c5d6a7b8c9d0e1f2a3b4c5d6a7</uuid>
+                            <name>CPU {#SNMPINDEX} 温度</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.2.1.2.{#SNMPINDEX}</snmp_oid>
+                            <key>cpu.temperature[{#SNMPINDEX}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>0</value_type>
+                            <units>℃</units>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>CPU</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+
+                        <!-- 型号 item_prototype (静态信息类) -->
+                        <item_prototype>
+                            <uuid>a3b4c5d6a7b8c9d0e1f2a3b4c5d6a7b8</uuid>
+                            <name>CPU {#SNMPINDEX} 型号</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.2.1.3.{#SNMPINDEX}</snmp_oid>
+                            <key>cpu.model[{#SNMPINDEX}]</key>
+                            <delay>1d</delay>
+                            <history>7d</history>
+                            <trends>0d</trends>
+                            <value_type>4</value_type>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>CPU</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+
+                <!-- 风扇自动发现规则 (delay=5m) -->
+                <discovery_rule>
+                    <uuid>b4c5d6a7b8c9d0e1f2a3b4c5d6a7b8c9</uuid>
+                    <name>风扇</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.3.1</snmp_oid>
+                    <key>fan.discovery</key>
+                    <delay>5m</delay>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>c5d6a7b8c9d0e1f2a3b4c5d6a7b8c9d0</uuid>
+                            <name>风扇 {#SNMPINDEX} 健康状态</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.3.1.1.{#SNMPINDEX}</snmp_oid>
+                            <key>fan.health[{#SNMPINDEX}]</key>
+                            <delay>1m</delay>
+                            <history>7d</history>
+                            <trends>0d</trends>
+                            <value_type>4</value_type>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>风扇</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>d6a7b8c9d0e1f2a3b4c5d6a7b8c9d0e1</uuid>
+                                    <expression>last(/LW_Template_Lenovo_SR660_V2/fan.health[{#SNMPINDEX}])&lt;&gt;"Normal"</expression>
+                                    <name>[风扇] {HOST.NAME} 风扇 {#SNMPINDEX} 健康状态异常</name>
+                                    <priority>HIGH</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>a7b8c9d0e1f2a3b4c5d6a7b8c9d0e1f3</uuid>
+                            <name>风扇 {#SNMPINDEX} 转速</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.3.1.2.{#SNMPINDEX}</snmp_oid>
+                            <key>fan.speed[{#SNMPINDEX}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>0</value_type>
+                            <units>RPM</units>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>风扇</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+
+                <!-- 电源自动发现规则 (delay=5m) -->
+                <discovery_rule>
+                    <uuid>b8c9d0e1f2a3b4c5d6a7b8c9d0e1f2a4</uuid>
+                    <name>电源</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.53184.1.4.1</snmp_oid>
+                    <key>power.discovery</key>
+                    <delay>5m</delay>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>c9d0e1f2a3b4c5d6a7b8c9d0e1f2a3b5</uuid>
+                            <name>电源 {#SNMPINDEX} 健康状态</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>1.3.6.1.4.1.53184.1.4.1.1.{#SNMPINDEX}</snmp_oid>
+                            <key>power.health[{#SNMPINDEX}]</key>
+                            <delay>1m</delay>
+                            <history>7d</history>
+                            <trends>0d</trends>
+                            <value_type>4</value_type>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>电源</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>d0e1f2a3b4c5d6a7b8c9d0e1f2a3b4c6</uuid>
+                                    <expression>last(/LW_Template_Lenovo_SR660_V2/power.health[{#SNMPINDEX}])&lt;&gt;"Normal"</expression>
+                                    <name>[电源] {HOST.NAME} 电源 {#SNMPINDEX} 健康状态异常</name>
+                                    <priority>HIGH</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$SNMP_COMMUNITY}</macro>
+                    <value>public</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>

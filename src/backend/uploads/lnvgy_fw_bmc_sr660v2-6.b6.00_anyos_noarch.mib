@@ -1,0 +1,5022 @@
+LENOVO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, TimeTicks FROM SNMPv2-SMI
+       DisplayString, FROM SNMPv2-TC
+    enterprises, IpAddress, Gauge, TimeTicks  ,NetworkAddress
+        FROM RFC1155-SMI;
+    device OBJECT IDENTIFIER ::= { enterprises 53184 }
+
+    sensorInfo OBJECT IDENTIFIER ::= { device 1 }
+
+    sensorTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF sensorEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorInfo  2 }
+
+    sensorEntry OBJECT-TYPE
+        SYNTAX sensorEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { SensorNum }
+        --DESCRIPTION " "
+        ::= { sensorTable 1 }
+
+    sensorEntryData::=
+        SEQUENCE {
+            SensorNum  INTEGER,
+            SensorType INTEGER,
+            SensorName DisplayString,
+            SensorReading DisplayString,
+            SensorStatus  DisplayString,
+                }
+
+    SensorNum  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorEntry 1 }
+
+    --add enum value
+    SensorType  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Unknow(0),
+            Temperature(1),
+            Voltage(2),
+            Current(3),
+            Fan(4),
+            ChassisIntrusion(5),
+            ViolationAttempt(6),
+            Processor(7),
+            PowerSupply(8),
+            PowerUnit(9),
+            Coolingdevice(10),
+            OtherUnit-based(11),
+            Memory(12),
+            DriveSlot(13),
+            POSTmemoryResize(14),
+            SystemFirmware(15),
+            EventLoggingDisabled(16),
+            Watchdog2(35),
+            CriticalInterrupt(19),
+            SystemEvent(18),
+            PowerButton(20),
+            BMCStart(22),
+            RestartInit(29),
+            ACPI(34),
+            ManagementSubsystem(40)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorEntry 2 }
+
+    SensorName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorEntry 3 }
+
+    SensorReading  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorEntry 4 }
+
+    SensorStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { sensorEntry 5 }
+
+    FRUInfo OBJECT IDENTIFIER ::= { device 2 }
+
+    FRUTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF FRUEntryData
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUInfo  2 }
+
+    FRUEntry OBJECT-TYPE
+        SYNTAX FRUEntryData
+        MAX-ACCESS read-write
+        STATUS current
+        INDEX { FRUIndex }
+        --DESCRIPTION " "
+        ::= { FRUTable 1}
+
+    FRUEntryData::=
+       SEQUENCE {
+            FRUIndex  INTEGER,
+            deviceName DisplayString,
+            ChassisPartNumber DisplayString,
+            ChassisSerialNumber DisplayString,
+            ChassisType DisplayString,
+            ChassisOEM DisplayString,
+            BoardManufacturer DisplayString,
+            BoardProductName  DisplayString,
+            BoardSerialNumber DisplayString,
+            BoardPartNumber DisplayString,
+            BoardOEM DisplayString,
+            ManufacturerName DisplayString,
+            ManufacturerDate DisplayString,
+            ProductName DisplayString,
+            ProductPartNumber DisplayString,
+            ProductVersion DisplayString,
+            ProductSerialNumber DisplayString,
+            ProductOEM DisplayString,
+            AssetTag DisplayString,
+            FRUFileID DisplayString,
+               }
+
+    FRUIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " FRU ID "
+        ::= { FRUEntry 1 }
+
+    deviceName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " Chassis Type "
+        ::= { FRUEntry 2 }
+
+    ChassisPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " Chassis Series Number "
+        ::= { FRUEntry 3 }
+
+    ChassisSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 4 }
+
+    ChassisType  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 5 }
+
+    ChassisOEM  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..256))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 6 }
+
+    BoardManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 7 }
+
+    BoardProductName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 8 }
+
+    BoardSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 9 }
+
+    BoardPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 10 }
+
+    BoardOEM  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..256))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 11 }
+
+    ManufacturerName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 12 }
+
+    ManufacturerDate  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 13 }
+
+    ProductName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 14 }
+
+    ProductPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 15 }
+
+    ProductVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 16 }
+
+    ProductSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 17 }
+
+    ProductOEM  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..256))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 18 }
+
+    AssetTag  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 19 }
+
+    FRUFileID  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FRUEntry 20 }
+
+    SELInfo OBJECT IDENTIFIER ::= { device 3 }
+
+    SELTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF SELEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELInfo  2 }
+
+    SELEntry OBJECT-TYPE
+        SYNTAX SELEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { SELIndex }
+        --DESCRIPTION " "
+        ::= { SELTable 1}
+
+    SELEntryData::=
+       SEQUENCE {
+            SELIndex  INTEGER,
+            SELTime DisplayString,
+            SELSensor DisplayString,
+            SELLevel DisplayString,
+            SELStatus  DisplayString,
+            SELDesc DisplayString,
+               }
+
+    SELIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 1 }
+
+    SELTime  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 2 }
+
+    SELSensor  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 3 }
+
+    SELLevel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 4 }
+
+    SELStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 5 }
+
+    SELDesc  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SELEntry 6 }
+
+    ChassisInfo OBJECT IDENTIFIER ::= { device 4 }
+
+    ChassisTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF ChassisDetialData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisInfo  2 }
+ 
+    ChassisDetial OBJECT-TYPE
+        SYNTAX ChassisDetialData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { ChassisIndex }
+        --DESCRIPTION " "
+        ::= { ChassisTable 1}
+
+    ChassisDetialData::=
+       SEQUENCE {
+            ChassisIndex  INTEGER,
+            PowerStatus INTEGER,
+            PowerIdentify INTEGER,
+            PowerPolicy INTEGER,
+            RetartCause  INTEGER,
+            Bootdev  INTEGER,
+               }
+
+    ChassisIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 1 }
+
+    PowerStatus  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Off(0),
+            On(1),
+            Cycle(2),
+            Reset(3),
+            Diag(4),
+            Soft(5)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 2 }
+
+    PowerIdentify  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Off(0),
+            TimedOn(1),
+            IndefiniteOn(2),
+            Unknow(3)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 3 }
+
+    PowerPolicy  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Always-Off(0),
+            Previous(1),
+            Always-On(2),
+            Unknow(3)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 4 }
+
+    RetartCause  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Unknow(0),
+            PowerCtlCmd(1),
+            ResetViaButton(2),
+            PowerViaButton(3),
+            Watchdog(4),
+            OEM(5),
+            PowerOnAC-policy-powerup(6),
+            PowerOnAC-policy-always-on(7),
+            PEF-Reset(8),
+            PEF-Cycle(9),
+            SoftReset(10),
+            PowerUp-RTC(11)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 5 }
+
+    Bootdev  OBJECT-TYPE
+        SYNTAX INTEGER {
+            None(0),
+            PXE(1),
+            Disk(2),
+            Safe(3),
+            Diag(4),
+            CDRom(5),
+            BIOS(6),
+            Floppy(7)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { ChassisDetial 6 }
+
+    UserInfo OBJECT IDENTIFIER ::= { device 5 }
+
+    UserTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF UserEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserInfo  2 }
+
+    UserEntry OBJECT-TYPE
+        SYNTAX UserEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { UserIndex }
+        --DESCRIPTION " "
+        ::= { UserTable 1}
+
+    UserEntryData::=
+        SEQUENCE {
+            UserIndex  INTEGER,
+            UserName DisplayString,
+            UserPassword DisplayString,
+            Lan1Access INTEGER,
+            Lan1Priv INTEGER,
+            Lan2Access INTEGER,
+            Lan2Priv INTEGER,
+                }
+
+    UserIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 1 }
+
+    UserName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 2 }
+
+    UserPassword  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 3 }
+
+    Lan1Access  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Disable(0),
+            Enable(1)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 4 }
+
+    Lan1Priv  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Unknow(0),
+            Callback(1),
+            User(2),
+            Operator(3),
+            Administrator(4),
+            OEM-Proprietary(5),
+            NO-Access(15)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 5 }
+
+    Lan2Access  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Disable(0),
+            Enable(1)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 6 }
+
+    Lan2Priv  OBJECT-TYPE
+        SYNTAX INTEGER {
+            Unknow(0),
+            Callback(1),
+            User(2),
+            Operator(3),
+            Administrator(4),
+            OEM-Proprietary(5),
+            NO-Access(15)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { UserEntry 7 }
+
+    PlatformInfo OBJECT IDENTIFIER ::= { device 6 }
+
+    HostName OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { PlatformInfo  2 }
+
+    Software OBJECT IDENTIFIER ::= { device 7 }
+
+    BMCInfo OBJECT IDENTIFIER ::= { Software 2 }
+           
+    BMCVersion OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { BMCInfo  1 }
+        
+    UEFIVersion OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { BMCInfo  2 }
+
+    FPGAVersion OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { BMCInfo  3 }
+
+    CPUInfo OBJECT IDENTIFIER ::= { device 8 }
+
+    CPUTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF CPUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUInfo  2 }
+
+    CPUEntry OBJECT-TYPE
+        SYNTAX CPUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { CPUIndex }
+        DESCRIPTION " "
+        ::= { CPUTable 1}
+
+    CPUEntryData::=
+       SEQUENCE {
+            CPUIndex INTEGER,
+            TotalCores INTEGER,
+            TotalThreads INTEGER,
+            MaxSpeedMHz INTEGER,
+            FrequencyMHz INTEGER,
+            L1CacheKiB INTEGER,
+            L2CacheKiB INTEGER,
+            L3CacheKiB INTEGER,
+            CPUManufacturer DisplayString,
+            CPUModel DisplayString,
+            CPUSerialNumber DisplayString,
+            InstructionSet DisplayString,
+            CPUHealthStatus DisplayString,
+            CPUName DisplayString,
+                }
+
+    CPUIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 1 }
+
+    TotalCores  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 2 }
+
+    TotalThreads  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 3 }
+
+    MaxSpeedMHz  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 4 }
+
+    FrequencyMHz  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 5 }
+
+    L1CacheKiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 6 }
+
+    L2CacheKiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 7 }
+
+    L3CacheKiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 8 }
+
+    CPUManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 9 }
+
+    CPUModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 10 }
+
+    CPUSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 11 }
+
+    InstructionSet  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 12 }
+
+    CPUHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 13 }
+
+     CPUName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { CPUEntry 14 }
+
+    MEMInfo OBJECT IDENTIFIER ::= { device 9 }
+
+    MEMTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF MEMEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMInfo  2 }
+
+    MEMEntry OBJECT-TYPE
+        SYNTAX MEMEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { MEMIndex }
+        DESCRIPTION " "
+        ::= { MEMTable 1}
+
+    MEMEntryData::=
+       SEQUENCE {
+            MEMIndex INTEGER,
+            CapacityMiB INTEGER,
+            OperatingSpeedMhz INTEGER,
+            MEMManufacturer DisplayString,
+            MEMPartNumber DisplayString,
+            MEMSerialNumber DisplayString,
+            BaseModuleType DisplayString,
+            MemorydeviceType DisplayString,
+            Ranks INTEGER,
+            MEMHealthStatus DisplayString,
+            DeviceLocator DisplayString,
+                }
+
+    MEMIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 1 }
+
+    CapacityMiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 2 }
+
+    OperatingSpeedMhz  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 3 }
+
+    MEMManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 4 }
+
+    MEMPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 5 }
+
+    MEMSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 6 }
+
+    BaseModuleType  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 7 }
+
+    MemorydeviceType  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 8 }
+
+    Ranks  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 9 }
+
+    MEMHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 10 }
+
+    DeviceLocator  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { MEMEntry 11 }
+
+    PSUInfo OBJECT IDENTIFIER ::= { device 10 }
+
+    PSUTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF PSUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUInfo  2 }
+
+    PSUEntry OBJECT-TYPE
+        SYNTAX PSUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { PSUIndex }
+        DESCRIPTION " "
+        ::= { PSUTable 1}
+
+    PSUEntryData::=
+       SEQUENCE {
+            PSUIndex INTEGER,
+            LineInputVoltage INTEGER,
+            PowerCapacityWatts INTEGER,
+            PowerInputWatts INTEGER,
+            PowerOutputWatts INTEGER,
+            PSUName DisplayString,
+            PSUManufacturer DisplayString,
+            PSUModel DisplayString,
+            PSUPartNumber DisplayString,
+            PSUSerialNumber DisplayString,
+            PowerSupplyType DisplayString,
+            PSUFirmwareVersion DisplayString,
+            PSUHealthStatus DisplayString,
+                }
+
+    PSUIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 1 }
+
+    LineInputVoltage  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 2 }
+
+    PowerCapacityWatts  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 3 }
+
+    PowerInputWatts  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 4 }
+
+    PowerOutputWatts  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 5 }
+
+    PSUName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 6 }
+
+    PSUManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 7 }
+
+    PSUModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 8 }
+
+    PSUPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 9 }
+
+    PSUSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 10 }
+
+    PowerSupplyType  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 11 }
+
+    PSUFirmwareVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 12 }
+
+    PSUHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PSUEntry 13 }
+
+    GPUInfo OBJECT IDENTIFIER ::= { device 11 }
+
+    GPUTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF GPUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUInfo  2 }
+
+    GPUEntry OBJECT-TYPE
+        SYNTAX GPUEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { GPUIndex }
+        DESCRIPTION " "
+        ::= { GPUTable 1}
+
+    GPUEntryData::=
+       SEQUENCE {
+            PSUIndex INTEGER,
+            BandWidth INTEGER,
+            PowerConsumption INTEGER,
+            Temperature INTEGER,
+            GPUName DisplayString,
+            GPUManufacturer DisplayString,
+            GPUModel DisplayString,
+            GPUPartNumber DisplayString,
+            GPUSerialNumber DisplayString,
+            VbiosVersion DisplayString,
+            GPUFirmwareVersion DisplayString,
+            GPUSlotNumber DisplayString,
+                }
+
+    GPUIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 1 }
+
+    BandWidth  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 2 }
+
+    PowerConsumption  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 3 }
+
+    Temperature  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 4 }
+
+    GPUName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 5 }
+
+    GPUManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 6 }
+
+    GPUModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 7 }
+
+    GPUPartNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 8 }
+
+    GPUSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 9 }
+
+    VbiosVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 10 }
+
+    GPUFirmwareVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 11 }
+
+    GPUSlotNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { GPUEntry 12 }
+
+    PCIEInfo OBJECT IDENTIFIER ::= { device 12 }
+
+    PCIETable OBJECT-TYPE
+        SYNTAX SEQUENCE OF PCIEEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEInfo  2 }
+
+    PCIEEntry OBJECT-TYPE
+        SYNTAX PCIEEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { PCIEIndex }
+        DESCRIPTION " "
+        ::= { PCIETable 1}
+
+    PCIEEntryData::=
+       SEQUENCE {
+            PCIEIndex INTEGER,
+            PCIEName DisplayString,
+            PCIEManufacturer DisplayString,
+            PCIEFirmwareVersion DisplayString,
+            PCIEModel DisplayString,
+            Type DisplayString,
+            PCIESlotNumber DisplayString,
+            MaxSpeed DisplayString,
+                }
+
+    PCIEIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 1 }
+
+    PCIEName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 2 }
+
+    PCIEManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 3 }
+
+    PCIEFirmwareVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 4 }
+
+    PCIEModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 5 }
+
+    Type  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 6 }
+
+    PCIESlotNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 7 }
+
+    MaxSpeed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { PCIEEntry 8 }
+
+    RAIDInfo OBJECT IDENTIFIER ::= { device 13 }
+
+    RAIDTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF RAIDEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDInfo  2 }
+
+    RAIDEntry OBJECT-TYPE
+        SYNTAX RAIDEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { RAIDIndex }
+        DESCRIPTION " "
+        ::= { RAIDTable 1}
+
+    RAIDEntryData::=
+       SEQUENCE {
+            RAIDIndex INTEGER,
+            RAIDManufacturer DisplayString,
+            RAIDFirmwareVersion DisplayString,
+            RAIDModel DisplayString,
+            RAIDSerialNumber DisplayString,
+            CardState DisplayString,
+            CardHealth DisplayString,
+            BBUState DisplayString,
+            BBUHealth DisplayString,
+            MemorySizeMiB INTEGER,
+                }
+
+    RAIDIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 1 }
+
+    RAIDManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 2 }
+
+    RAIDFirmwareVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 3 }
+
+    RAIDModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 4 }
+
+    RAIDSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 5 }
+
+    CardState  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 6 }
+
+    CardHealth  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 7 }
+
+    BBUState  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 8 }
+
+    BBUHealth  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 9 }
+
+    MemorySizeMiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { RAIDEntry 10 }
+
+    SNMPInfo OBJECT IDENTIFIER ::= { device 14 }
+
+    SNMPTrapTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF SNMPTrapEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPInfo  2 }
+
+    SNMPTrapEntry OBJECT-TYPE
+        SYNTAX SNMPTrapEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { TrapIndex }
+        DESCRIPTION " "
+        ::= { SNMPTrapTable 1}
+
+    SNMPTrapEntryData::=
+       SEQUENCE {
+            TrapIndex INTEGER,
+            TrapEnable INTEGER,
+            TrapVersion INTEGER,
+            TrapSeverity INTEGER,
+            TrapCommunity DisplayString,
+            TrapUser DisplayString,
+            TrapUserEnc INTEGER,
+            TrapPwdEnc INTEGER,
+            TrapDstIP DisplayString,
+            TrapPort INTEGER,
+                }
+
+    TrapIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 1 }
+
+    TrapEnable  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 2 }
+
+    TrapVersion  OBJECT-TYPE
+        SYNTAX INTEGER{
+            Unknow(0),
+            V1(1),
+            V2C(2),
+            V3(3)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 3 }
+
+    TrapSeverity  OBJECT-TYPE
+        SYNTAX INTEGER{
+            Unknow(0),
+            Critical(1),
+            Critical-Warning(2),
+            Info-Warning-Critical(3)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 4 }
+
+    TrapCommunity  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 5 }
+
+    TrapUser  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 6 }
+
+    TrapUserEnc  OBJECT-TYPE
+        SYNTAX INTEGER{
+            MD5(0),
+            SHA(1),
+            NA(255)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 7 }
+
+    TrapPwdEnc  OBJECT-TYPE
+        SYNTAX INTEGER{
+            AES(0),
+            DES(1),
+            NA(255)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 8 }
+
+    TrapDstIP  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 9 }
+
+    TrapPort  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPTrapEntry 10 }
+
+    SNMPServerInfo OBJECT-TYPE
+        SYNTAX SEQUENCE OF SNMPServerEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPInfo  3 }
+
+    SNMPServerEntry OBJECT-TYPE
+        SYNTAX SNMPServerEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { SNMPServerIndex }
+        DESCRIPTION " "
+        ::= { SNMPServerInfo 1}
+
+    SNMPServerEntryData::=
+       SEQUENCE {
+            SNMPServerIndex INTEGER,
+            ServerEnable INTEGER,
+            ServerPort INTEGER,
+            ROCommunity DisplayString,
+            RWCommunity DisplayString,
+                }
+
+    SNMPServerIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPServerEntry 1 }
+
+    ServerEnable  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPServerEntry 2 }
+
+    ServerPort  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPServerEntry 3 }
+
+    ROCommunity  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPServerEntry 4 }
+
+    RWCommunity  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { SNMPServerEntry 5 }
+
+    DISKInfo OBJECT IDENTIFIER ::= { device 16 }
+
+    DISKTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF DISKEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKInfo  2 }
+
+    DISKEntry OBJECT-TYPE
+        SYNTAX DISKEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        INDEX { DISKIndex }
+        DESCRIPTION " "
+        ::= { DISKTable 1}
+
+    DISKEntryData::=
+       SEQUENCE {
+            DISKIndex INTEGER,
+            DISKCapacityGiB INTEGER,
+            CapableSpeedGbs INTEGER,
+            NegotiatedSpeedGbs INTEGER,
+            BlockSizeBytes     INTEGER,
+            DISKManufacturer DisplayString,
+            DISKModel DisplayString,
+            DISKSerialNumber DisplayString,
+            MediaType DisplayString,
+            Protocol DisplayString,
+            DISKFirmwareVersion DisplayString,
+            LeftimePercent INTEGER,
+            DISKHealthStatus DisplayString,
+            SlotName DisplayString,
+            RadiDevID INTEGER,
+                }
+
+    DISKIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 1 }
+
+    DISKCapacityGiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 2 }
+
+    CapableSpeedGbs  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 3 }
+
+    NegotiatedSpeedGbs  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 4 }
+
+    BlockSizeBytes  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 5 }
+
+    DISKManufacturer  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 6 }
+
+    DISKModel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 7 }
+
+    DISKSerialNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 8 }
+
+    MediaType  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 9 }
+
+    Protocol  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 10 }
+
+    DISKFirmwareVersion  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 11 }
+
+    LeftimePercent  OBJECT-TYPE
+        SYNTAX  INTEGER{
+        NotSupport(255)
+        }	
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 12 }
+
+    DISKHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 13 }
+
+    SlotName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 14 }
+
+    RadiDevID  OBJECT-TYPE
+        SYNTAX  INTEGER{
+        NotSupport(255)
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { DISKEntry 15 }
+
+    HealthInfo OBJECT IDENTIFIER ::= { device 17 }
+
+    HealthTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF HealthEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthInfo  2 }
+
+    HealthEntry OBJECT-TYPE
+        SYNTAX HealthEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+    INDEX { HealthIndex }
+        --DESCRIPTION " "
+        ::= { HealthTable 1}
+
+    HealthEntryData::=
+       SEQUENCE {
+            HealthIndex INTEGER,
+            EntiretySummaryStatus DisplayString,
+            CPUSummaryStatus DisplayString,
+            MEMSummaryStatus DisplayString,
+            DISKSummaryStatus DisplayString,
+            PCISummaryStatus DisplayString,
+            FANSummaryStatus DisplayString,
+            TEMPSummaryStatus DisplayString,
+            VoltageSummaryStatus DisplayString,
+            POWERSummaryStatus DisplayString,
+            CurrentPower INTEGER,
+            AvgPowerInDay INTEGER,
+            MaxPowerInDay INTEGER,
+            MinPowerInDay INTEGER,
+               }
+
+    HealthIndex  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 1 }
+
+    EntiretySummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 2 }
+
+    CPUSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 3 }
+
+    MEMSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 4 }
+
+    DISKSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 5 }
+
+    PCISummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 6 }
+
+    FANSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 7 }
+
+    TEMPSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 8 }
+
+    VoltageSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 9 }
+
+    POWERSummaryStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 10 }
+
+    CurrentPower  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 11 }
+
+    AvgPowerInDay  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 12 }
+
+    MaxPowerInDay  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 13 }
+
+    MinPowerInDay  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { HealthEntry 14 }
+
+   NICInfo OBJECT IDENTIFIER ::= { device 18 }
+
+    NICTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF NICEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICInfo  2 }
+
+    NICEntry OBJECT-TYPE
+        SYNTAX NICEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+    INDEX { NICIndex }
+        --DESCRIPTION " "
+        ::= { NICTable 1}
+
+    NICEntryData::=
+       SEQUENCE {
+            Index INTEGER,
+            NICName DisplayString,
+            Description DisplayString,
+            NICHealthStatus DisplayString,
+            NICSlotNumber DisplayString,
+            DataWidth INTEGER,
+            MaxSpeed DisplayString,
+            Port0Speed DisplayString,
+            Port0Address DisplayString,
+            Port1Speed DisplayString,
+            Port1Address DisplayString,
+            Port2Speed DisplayString,
+            Port2Address DisplayString,
+            Port3Speed DisplayString,
+            Port3Address DisplayString,
+               }
+
+    Index  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 1 }
+
+    NICName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 2 }
+
+    Description  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 3 }
+
+    NICHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 4 }
+
+    NICSlotNumber  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 5 }
+
+    DataWidth  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 6 }
+
+    MaxSpeed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 7 }
+
+    Port0Speed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 8 }
+
+    Port0Address  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 9 }
+
+    Port1Speed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 10 }
+
+    Port1Address  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 11 }
+
+    Port2Speed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 12 }
+
+    Port2Address  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 13 }
+
+    Port3Speed  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 14 }
+
+    Port3Address  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { NICEntry 15 }
+
+    FANInfo OBJECT IDENTIFIER ::= { device 19 }
+
+    FANTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF FANEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANInfo  2 }
+
+    FANEntry OBJECT-TYPE
+        SYNTAX FANEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+    INDEX { Index }
+        --DESCRIPTION " "
+        ::= { FANTable 1}
+
+    FANEntryData::=
+        SEQUENCE {
+            Index INTEGER,
+            FrontRotorSpeed INTEGER,
+            RearRotorSpeed INTEGER,
+            DutyRatio INTEGER,
+            FANHealthStatus DisplayString,
+            FanMode INTEGER,
+                }
+ 
+    Index  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 1 }
+
+    FrontRotorSpeed  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 2 }
+
+    RearRotorSpeed  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 3 }
+
+    DutyRatio  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 4 }
+
+    FANHealthStatus  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 5 }
+
+    FanMode  OBJECT-TYPE
+        SYNTAX  INTEGER
+        {
+            DoubleRotor(0),
+            SingleRotor(1),
+        }
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { FANEntry 6 }
+
+    LogicalDevInfo OBJECT IDENTIFIER ::= { device 20 }
+           
+    LDTable OBJECT-TYPE
+        SYNTAX SEQUENCE OF LDEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+        DESCRIPTION " "
+        ::= { LogicalDevInfo  2 }
+
+    LDEntry OBJECT-TYPE
+        SYNTAX LDEntryData
+        MAX-ACCESS not-accessible
+        STATUS current
+    INDEX { Index }
+        --DESCRIPTION " "
+        ::= { LDTable 1 }
+
+    LDEntryData::=
+       SEQUENCE {
+        Index INTEGER,
+        LDName DisplayString,
+        RaidLevel DisplayString,
+        LDCapacityGiB INTEGER,
+        DiskArray DisplayString,
+        DiskState INTEGER,
+               }
+
+    Index  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 1 }
+
+    LDName  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 2 }
+
+    RaidLevel  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 3 }
+
+    LDCapacityGiB  OBJECT-TYPE
+        SYNTAX  INTEGER
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 4 }
+
+    DiskArray  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 5 }
+
+    DiskState  OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-only
+        STATUS current
+        DESCRIPTION " "
+        ::= { LDEntry 6 }
+
+    TrapInfo OBJECT IDENTIFIER ::= { device 777 }
+
+    Severity OBJECT-TYPE
+        SYNTAX INTEGER {
+            Unknow(0),
+            Info(3),
+            Warning(2),
+            Critical(1)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  1 }
+           
+    State OBJECT-TYPE
+        SYNTAX INTEGER {
+            Assert(0),
+            Deassert(1)
+        }
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  2 }
+
+    PartName OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  3 }
+
+    PartSN OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  4 }
+
+    SN OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..128))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  5 }
+
+    Description OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..512))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  6 }
+
+    ExtraDsc OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..512))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  7 }
+
+    OemDataDsc OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (0..512))
+        MAX-ACCESS read-write
+        STATUS current
+        DESCRIPTION " "
+        ::= { TrapInfo  8 }
+
+    snmp-v2-trap  OBJECT IDENTIFIER ::= {device 3183}
+    serverAlertTrapGroup     OBJECT IDENTIFIER ::= {snmp-v2-trap 1}
+    serverAlertTrap OBJECT IDENTIFIER ::= {serverAlertTrapGroup 1}
+
+--**************************************************************************
+-- Temperature Sensor Events (20 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (010150h == 65872)
+tempTrapV1LowerNonCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going low. - Asserted"
+    ::= { serverAlertTrap 65872 }
+
+-- Event Sensor Type, Event Type, Event Offset (010151h == 65873)
+tempTrapV1LowerNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going high. - Asserted"
+    ::= { serverAlertTrap 65873 }
+
+-- Event Sensor Type, Event Type, Event Offset (010152h == 65874)
+tempTrapV1LowerCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going low. - Asserted"
+    ::= { serverAlertTrap 65874 }
+
+-- Event Sensor Type, Event Type, Event Offset (010153h == 65875)
+tempTrapV1LowerCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going high. - Asserted"
+    ::= { serverAlertTrap 65875 }
+
+-- Event Sensor Type, Event Type, Event Offset (010156h == 65878)
+tempTrapV1UpperNonCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going low. - Asserted"
+    ::= { serverAlertTrap 65878 }
+
+-- Event Sensor Type, Event Type, Event Offset (010157h == 65879)
+tempTrapV1UpperNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going high. - Asserted"
+    ::= { serverAlertTrap 65879 }
+
+-- Event Sensor Type, Event Type, Event Offset (010158h == 65880)
+tempTrapV1UpperCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going low. - Asserted"
+    ::= { serverAlertTrap 65880 }
+
+-- Event Sensor Type, Event Type, Event Offset (010159h == 65881)
+tempTrapV1UpperCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going high. - Asserted"
+    ::= { serverAlertTrap 65881 }
+
+-- Event Sensor Type, Event Type, Event Offset (01015Bh == 65883)
+tempTrapV1UpperNonRecoverableGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-recoverable threshold, going high. - Asserted"
+    ::= { serverAlertTrap 65883 }
+
+-- Event Sensor Type, Event Type, Event Offset (018150h == 98640)
+tempTrapV1LowerNonCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going low. - Deasserted"
+    ::= { serverAlertTrap 98640 }
+
+-- Event Sensor Type, Event Type, Event Offset (018151h == 98641)
+tempTrapV1LowerNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going high. - Deasserted"
+    ::= { serverAlertTrap 98641 }
+
+-- Event Sensor Type, Event Type, Event Offset (018152h == 98642)
+tempTrapV1LowerCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going low. - Deasserted"
+    ::= { serverAlertTrap 98642 }
+
+-- Event Sensor Type, Event Type, Event Offset (018153h == 98643)
+tempTrapV1LowerCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going high. - Deasserted"
+    ::= { serverAlertTrap 98643 }
+
+-- Event Sensor Type, Event Type, Event Offset (018156h == 98646)
+tempTrapV1UpperNonCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going low. - Deasserted"
+    ::= { serverAlertTrap 98646 }
+
+-- Event Sensor Type, Event Type, Event Offset (018157h == 98647)
+tempTrapV1UpperNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going high. - Deasserted"
+    ::= { serverAlertTrap 98647 }
+
+-- Event Sensor Type, Event Type, Event Offset (018158h == 98648)
+tempTrapV1UpperCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going low. - Deasserted"
+    ::= { serverAlertTrap 98648 }
+
+-- Event Sensor Type, Event Type, Event Offset (018159h == 98649)
+tempTrapV1UpperCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going high. - Deasserted"
+    ::= { serverAlertTrap 98649 }
+
+-- Event Sensor Type, Event Type, Event Offset (01815Bh == 98651)
+tempTrapV1UpperNonRecoverableGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Temperature sensor crossed upper non-recoverable threshold, going high. - Deasserted"
+    ::= { serverAlertTrap 98651	}
+
+--**************************************************************************
+-- Voltage Sensor Events (20 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (020150h == 131408)
+voltageTrapV1LowerNonCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 131408 }
+
+-- Event Sensor Type, Event Type, Event Offset(020151h == 131409)
+voltageTrapV1LowerNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 131409 }
+
+-- Event Sensor Type, Event Type, Event Offset (020152h == 131410)
+voltageTrapV1LowerCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 131410 }
+
+-- Event Sensor Type, Event Type, Event Offset (020153h == 131411)
+voltageTrapV1LowerCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 131411 }
+
+-- Event Sensor Type, Event Type, Event Offset (020154h == 131412)
+voltageTrapV1LowerNonRecoverableGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower non-recoverable threshold, going low - Asserted."
+    ::= { serverAlertTrap 131412 }	
+
+-- Event Sensor Type, Event Type, Event Offset (020156h == 131414)
+voltageTrapV1UpperNonCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 131414 }
+
+-- Event Sensor Type, Event Type, Event Offset (020157h == 131415)
+voltageTrapV1UpperNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 131415 }
+
+-- Event Sensor Type, Event Type, Event Offset (020158h == 131416)
+voltageTrapV1UpperCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 131416 }
+
+-- Event Sensor Type, Event Type, Event Offset (020159h == 131417)
+voltageTrapV1UpperCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 131417 }
+
+-- Event Sensor Type, Event Type, Event Offset (02015Bh == 131419)
+voltageTrapV1UpperNonRecoverableGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= { serverAlertTrap 131419 }
+
+-- Event Sensor Type, Event Type, Event Offset (028150h == 164176)
+voltageTrapV1LowerNonCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 164176 }
+
+-- Event Sensor Type, Event Type, Event Offset (028151h == 164177)
+voltageTrapV1LowerNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 164177 }
+
+-- Event Sensor Type, Event Type, Event Offset (028152h == 164178)
+voltageTrapV1LowerCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 164178 }
+
+-- Event Sensor Type, Event Type, Event Offset (028153h == 164179)
+voltageTrapV1LowerCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 164179 }
+
+-- Event Sensor Type, Event Type, Event Offset (028154h == 164180)
+voltageTrapV1UpperNonRecoverableGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going low - Deasserted."
+    ::= { serverAlertTrap 164180 }
+
+-- Event Sensor Type, Event Type, Event Offset (028156h == 164182)
+voltageTrapV1UpperNonCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 164182 }
+
+-- Event Sensor Type, Event Type, Event Offset (028157h == 164183)
+voltageTrapV1UpperNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 164183 }
+
+-- Event Sensor Type, Event Type, Event Offset (028158h == 164184)
+voltageTrapV1UpperCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 164184 }
+
+-- Event Sensor Type, Event Type, Event Offset (028159h == 164185)
+voltageTrapV1UpperCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 164185 }
+
+-- Event Sensor Type, Event Type, Event Offset (02815Bh == 164187)
+voltageTrapV1UpperNonRecoverableGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= { serverAlertTrap 164187 }
+
+--**************************************************************************
+-- Current Sensor Events ( 6 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (030157h == 196951)
+currentTrapV1UpperNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 196951 }
+
+-- Event Sensor Type, Event Type, Event Offset (030159h == 196953)
+currentTrapV1UpperCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 196953 }
+
+-- Event Sensor Type, Event Type, Event Offset (03015Bh == 196955)
+currentTrapV1UpperNonRecoverableGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= { serverAlertTrap 196955 }
+
+-- Event Sensor Type, Event Type, Event Offset (038157h == 229719)
+currentTrapV1UpperNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 229719 }
+
+-- Event Sensor Type, Event Type, Event Offset (038159h == 229721)
+currentTrapV1UpperCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 229721 }
+
+-- Event Sensor Type, Event Type, Event Offset (03815Bh == 229723)
+currentTrapV1UpperNonRecoverableGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Current sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= { serverAlertTrap 229723 }
+
+--**************************************************************************
+-- Fan Failure Events (10 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (040150h == 262480)
+fanFailureLowerNonCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 262480 }
+
+-- Event Sensor Type, Event Type, Event Offset (040151h == 262481)
+fanFailureLowerNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 262481 }
+
+-- Event Sensor Type, Event Type, Event Offset (040152h == 262482)
+fanFailureLowerCriticalGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going low - Asserted."
+    ::= { serverAlertTrap 262482 }
+
+-- Event Sensor Type, Event Type, Event Offset (040153h == 262483)
+fanFailureLowerCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 262483 }
+
+-- Event Sensor Type, Event Type, Event Offset (040154h == 262484)
+fanFailureLowerNonRecoverableGoingLow NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-recoverable threshold, going low - Asserted."
+    ::= { serverAlertTrap 262484 }
+
+-- Event Sensor Type, Event Type, Event Offset (048150h == 295248)
+fanFailureLowerNonCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 295248 }
+
+-- Event Sensor Type, Event Type, Event Offset (048151h == 295249)
+fanFailureLowerNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 295249 }
+
+-- Event Sensor Type, Event Type, Event Offset (048152h == 295250)
+fanFailureLowerCriticalGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going low - Deasserted."
+    ::= { serverAlertTrap 295250 }
+
+-- Event Sensor Type, Event Type, Event Offset (048153h == 295251)
+fanFailureLowerCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 295251 }
+
+-- Event Sensor Type, Event Type, Event Offset (048154h == 295252)
+fanFailureLowerNonRecoverableGoingLowClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan sensor crossed lower non-recoverable threshold, going low - Deasserted."
+    ::= { serverAlertTrap 295252 }
+
+--**************************************************************************
+-- Fan Supply Fault Events (3 of them)
+--**************************************************************************	
+
+-- Event Sensor Type, Event Type, Event Offset (040802h == 264192)
+fandeviceAbsence NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan device removed/absent event - Asserted."
+    ::= { serverAlertTrap 264192 }
+
+-- Event Sensor Type, Event Type, Event Offset (048800h == 296960)
+fandevicePresence NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan device removed/absent event - Desserted."
+    ::= { serverAlertTrap 296960 }
+
+-- Event Sensor Type, Event Type, Event Offset (04080Dh == 264205)
+powerdeviceHotPlug NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Fan device hot plug event - Asserted."
+    ::= { serverAlertTrap 264205 }
+
+--**************************************************************************
+-- Chassis Intrusion Event( 8 of them)
+--**************************************************************************
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F00h == 356096)
+chassisIntrusionEvent NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "A Chassis Intrusion assertion event - Asserted."
+    ::= { serverAlertTrap 356096 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F01h == 356097) 
+chassisDriveBayIntrusionEvent NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "A Chassis Intrusion Drive Bay intrusion assertion event - Asserted."
+    ::= { serverAlertTrap 356097 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F02h == 356098)
+chassisIOCardIntrusionEvent NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "A Chassis Intrusion I/O Card area intrusion assertion event - Asserted."
+    ::= { serverAlertTrap 356098 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F03h == 356099)
+chassisAreaIntrusion NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "A Chassis Intrusion Processor area intrusion assertion event - Asserted."
+    ::= { serverAlertTrap 356099 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F04h == 356100)
+chassisIntrusionEventLANLeashLost NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "A Chassis Intrusion LAN leash lost assertion event - Asserted."
+    ::= { serverAlertTrap 356100 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (056F05h == 356101)
+chassisUnauthorizedDock NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "A Chassis Intrusion Unauthorized dock assertion event - Asserted."
+    ::= { serverAlertTrap 356101 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (05EF00h == 388864)
+chassisIntrusionEventClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "A Chassis Intrusion Deassertion event - Desserted."
+    ::= { serverAlertTrap 388864 }
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset (05EF04h == 388868)
+chassisIntrusionEventLANLeashLostClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "A Chassis Intrusion LAN leash lost de-assertion event - Desserted."
+    ::= { serverAlertTrap 388868 }
+
+--**************************************************************************
+-- Power Sensor Events ( 6 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (080157h == 524631)
+powerTrapV1UpperNonCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 524631 }
+
+-- Event Sensor Type, Event Type, Event Offset (080159h == 524633)
+powerTrapV1UpperCriticalGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper critical threshold, going high - Asserted."
+    ::= { serverAlertTrap 524633 }
+
+-- Event Sensor Type, Event Type, Event Offset (08015Bh == 524635)
+powerTrapV1UpperNonRecoverableGoingHigh NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= { serverAlertTrap 524635 }
+
+-- Event Sensor Type, Event Type, Event Offset (088157h == 557399)
+powerTrapV1UpperNonCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 557399 }
+
+-- Event Sensor Type, Event Type, Event Offset (088159h == 557401)
+powerTrapV1UpperCriticalGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper critical threshold, going high - Deasserted."
+    ::= { serverAlertTrap 557401 }
+
+-- Event Sensor Type, Event Type, Event Offset (08815Bh == 557403)
+powerTrapV1UpperNonRecoverableGoingHighClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= { serverAlertTrap 557403 }
+
+--**************************************************************************
+-- Power Supply Fault Events (14 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (086F00h == 552704)
+powerSupplyPresence NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power supply presence event - Asserted."
+    ::= { serverAlertTrap 552704 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F01h == 552705)
+powerSupplyFailure NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply failure event - Asserted."
+    ::= { serverAlertTrap 552705 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F02h == 552706)
+powerSupplyPredictiveFailure NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply predictive failure event - Asserted."
+    ::= { serverAlertTrap 552706 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F03h == 552707)
+powerSupplyACLost NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply A/C lost event - Asserted."
+    ::= { serverAlertTrap 552707 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F04h == 552708)
+powerSupplyInputLost NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply input lost or out-of-range - Asserted."
+    ::= { serverAlertTrap 552708 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F06h == 552710)
+powerSupplyConfigurationError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply configuration error event - Asserted."
+    ::= { serverAlertTrap 552710 }
+
+-- Event Sensor Type, Event Type, Event Offset (086F0Dh == 552717)
+powerSupplyHotPlug NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply hot plug event - Asserted."
+    ::= { serverAlertTrap 552717 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF00h == 585472)
+powerSupplyPresenceClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power supply presence event - Deasserted."
+    ::= { serverAlertTrap 585472 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF01h == 585473)
+powerSupplyFailureClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply failure event - Deasserted."
+    ::= { serverAlertTrap 585473 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF02h == 585474)
+powerSupplyPredictiveFailureClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply predictive failure event - Deasserted."
+    ::= { serverAlertTrap 585474 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF03h == 585475)
+powerSupplyACLostClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply A/C lost event - Deasserted."
+    ::= { serverAlertTrap 585475 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF04h == 585476)
+powerSupplyInputLostClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply input lost or out-of-range - Deasserted."
+    ::= { serverAlertTrap 585476 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF06h == 585478)
+powerSupplyConfigurationErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply configuration error event - Deasserted."
+    ::= { serverAlertTrap 585478 }
+
+-- Event Sensor Type, Event Type, Event Offset (08EF0Dh == 585485)
+powerSupplyHotPlugClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power supply hot plug event - Deasserted."
+    ::= { serverAlertTrap 585485 }
+
+--**************************************************************************
+-- Uncorrectable ECC Error Event(12 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F00h == 814848)
+correctableECCError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Correctable ECC error event - Asserted."
+    ::= { serverAlertTrap 814848 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F01h == 814849)
+uncorrectableECCError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Uncorrectable ECC error event - Asserted."
+    ::= { serverAlertTrap 814849 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F04h == 814852)
+memoryDeviceDisabled NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Memory Device Disabled - Asserted."
+    ::= { serverAlertTrap 814852 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F05h == 814853)
+correctableECCloglimit NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Correctable ECC / other correctable memory error logging limit reached - Asserted."
+    ::= { serverAlertTrap 814853 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F06h == 814854)
+alertTrapV1MemoryPresence NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Presence detected - Asserted."
+    ::= { serverAlertTrap 814854 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F07h == 814855)
+alertTrapV1MemoryConfigurationError  NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Configuration error - Asserted."
+    ::= { serverAlertTrap 814855 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F09h == 814857)
+alertTrapV1MemoryMRCTraining NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Memory MRC training warning event - Asserted."
+    ::= { serverAlertTrap 814857 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F0Ah == 814858)
+alertTrapV1MemoryOvertemperature NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Critical Overtemperature - Asserted."
+    ::= { serverAlertTrap 814858 }
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F0Ch == 814860)
+alertTrapV1MemoryMRC NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Memory MRC DRAM memtest errors - Asserted."
+    ::= { serverAlertTrap 814860 }
+
+-- Event Sensor Type, Event Type, Event Offset (0CEF00h == 847616)
+correctableECCErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Correctable ECC error event - Deasserted."
+    ::= { serverAlertTrap 847616 }
+
+-- Event Sensor Type, Event Type, Event Offset (0CEF01h == 847617)
+uncorrectableECCErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Uncorrectable ECC error event - Deasserted."
+    ::= { serverAlertTrap 847617 }
+
+-- Event Sensor Type, Event Type, Event Offset (0CEF04h == 847620)
+memoryDeviceDisabledClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Memory Device Disabled - Deasserted."
+    ::= { serverAlertTrap 847620 }
+
+--**************************************************************************
+-- POST Error Event(3 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0F6F00h == 1011456)
+postError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power On Self Test (POST) error event - Asserted."
+    ::= { serverAlertTrap 1011456 }
+
+-- Event Sensor Type, Event Type, Event Offset (0F6F01h == 1011457) Critical
+SystemFirmwareHang NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "System Firmware Hang  - Asserted."
+    ::= { serverAlertTrap 1011457 }
+
+-- Event Sensor Type, Event Type, Event Offset (0FEF00h == 1044224)
+postErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power On Self Test (POST) error event - Deasserted."
+    ::= { serverAlertTrap 1044224 }
+
+--**************************************************************************
+-- Processor Failure Events (20 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (076F00h == 487168)
+ProcessorIERR NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor IERR - Asserted."
+    ::= { serverAlertTrap 487168 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F01h == 487169)
+thermalTripError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Thermal Trip error event - Asserted."
+    ::= { serverAlertTrap 487169 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F02h == 487170)
+FRBFailure NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "FRB1/BIST failure - Asserted."
+    ::= { serverAlertTrap 487170 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F05h == 487173)
+ProcessorConfigurationError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Configuration Error - Asserted."
+    ::= { serverAlertTrap 487173 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F07h == 487175)
+cpuPresence NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Presence - Asserted"
+    ::= { serverAlertTrap 487175 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F08h == 487176)
+cpuDisabled NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Disabled - Asserted"
+    ::= { serverAlertTrap 487176 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F0Ah == 487178)
+ProcessorThrottled NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Automatically Throttled - Asserted"
+    ::= { serverAlertTrap 487178 }
+
+-- Event Sensor Type, Event Type, Event Offset (076F0Bh == 487179)
+ProcessorCheckException NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Asserted"
+    ::= { serverAlertTrap 487179 }
+
+-- Event Sensor Type, Event Type, Event Offset (076FABh == 487339)
+ProcessorCheckUncorrectable NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Asserted"
+    ::= { serverAlertTrap 487339 }
+
+-- Event Sensor Type, Event Type, Event Offset (076FACh == 487340)
+ProcessorCheckError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Correctable Machine Check Error - Asserted"
+    ::= { serverAlertTrap 487340 }
+
+-- Event Sensor Type, Event Type, Event Offset (070301h == 459521)
+procDisabledError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "CATERR Event Detected - Asserted."
+    ::= { serverAlertTrap 459521 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF00h == 519936)
+ProcessorIERRClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor IERR  - Deasserted."
+    ::= { serverAlertTrap 519936 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF01h == 519937) 
+thermalTripErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Thermal Trip error event - Deasserted."
+    ::= { serverAlertTrap 519937 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF02h == 519938)
+FRBFailureClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "FRB1/BIST failure - Deasserted."
+    ::= { serverAlertTrap 519938 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF05h == 519941)
+ProcessorConfigurationError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Configuration Error - Deasserted."
+    ::= { serverAlertTrap 519941 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF07h == 519943)
+cpuPresenceClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Presence - Deasserted"
+    ::= { serverAlertTrap 519943 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF08h == 519944)
+cpuDisabledClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Disabled - Deasserted"
+    ::= { serverAlertTrap 519944 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF0Ah == 519946)
+ProcessorThrottledClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Processor Automatically Throttled - Deasserted"
+    ::= { serverAlertTrap 519946 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EF0Bh == 519947)
+ProcessorCheckExceptionClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Deasserted"
+    ::= { serverAlertTrap 519947 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EFABh == 520107)
+ProcessorCheckExceptionClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Deasserted"
+    ::= { serverAlertTrap 520107 }
+
+-- Event Sensor Type, Event Type, Event Offset (07EFACh == 520108)
+ProcessorCheckErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Correctable Machine Check Error - Deasserted"
+    ::= { serverAlertTrap 520108 }
+
+-- Event Sensor Type, Event Type, Event Offset (078301h == 492289)
+procDisabledErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "CATERR Event Detected - Deasserted."
+    ::= { serverAlertTrap 492289 }
+
+--**************************************************************************
+-- Critical Interrupt Events (10 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (136F00h == 1273600)
+fatalNMIError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Front Panel NMI Assertion event - Asserted."
+    ::= { serverAlertTrap 1273600 }
+
+-- Event Sensor Type, Event Type, Event Offset (136FA4h == 1273764)
+PCIPERR NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "PCI PERR event - Asserted."
+    ::= { serverAlertTrap 1273764 }
+
+-- Event Sensor Type, Event Type, Event Offset (136FA5h == 1273765)
+PCISERR NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "PCI SERR event - Asserted."
+    ::= { serverAlertTrap 1273765 }
+
+-- Event Sensor Type, Event Type, Event Offset (136F08h == 1273608)
+BusUncorrectableError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Uncorrectable Error - Asserted."
+    ::= { serverAlertTrap 1273608 }
+
+-- Event Sensor Type, Event Type, Event Offset (136F0Ah == 1273610)
+BusFatalError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Fatal Error - Asserted."
+    ::= { serverAlertTrap 1273610 }
+
+-- Event Sensor Type, Event Type, Event Offset (136F0Bh == 1273611)
+BusDegradedError NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Degraded (bus operating in a degraded performance state) - Asserted."
+    ::= { serverAlertTrap 1273611 }
+
+-- Event Sensor Type, Event Type, Event Offset (13EF00h == 1306368)
+fatalNMIErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Front Panel NMI Assertion event - Deasserted."
+    ::= { serverAlertTrap 1306368 }
+
+-- Event Sensor Type, Event Type, Event Offset (13EFA4h == 1306532)
+PCIPERRClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "PCI PERR event - Deasserted."
+    ::= { serverAlertTrap 1306532 }
+	
+-- Event Sensor Type, Event Type, Event Offset (13EFA5h == 1306533)
+PCISERRClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "PCI SERR event - Deasserted."
+    ::= { serverAlertTrap 1306533 }
+
+-- Event Sensor Type, Event Type, Event Offset (13EF08h == 1306376)
+BusUncorrectableClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Uncorrectable Error - Deasserted."
+    ::= { serverAlertTrap 1306376 }
+
+-- Event Sensor Type, Event Type, Event Offset (13EF0Ah == 1306378)
+BusFatalErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Fatal Error - Deasserted."
+    ::= { serverAlertTrap 1306378 }
+
+-- Event Sensor Type, Event Type, Event Offset (13EF0Bh == 1306379)
+BusDegradedErrorClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Bus Degraded (bus operating in a degraded performance state) - Deasserted."
+    ::= { serverAlertTrap 1306379 }
+
+--**************************************************************************
+-- PWR Events (3 of them)
+--**************************************************************************	
+
+-- Event Sensor Type, Event Type, Event Offset (226F00h == 2256640)
+powerStateWorking NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "S0/G0 Working - Asserted."
+    ::= { serverAlertTrap 2256640 }
+
+-- Event Sensor Type, Event Type, Event Offset (226F05h == 2256645)
+powerStateS5SoftOff NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "S5/G2 soft-off - Asserted."
+    ::= { serverAlertTrap 2256645 }	
+
+-- Event Sensor Type, Event Type, Event Offset (226F06h == 2256646)
+powerStateS4SoftOff NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "S4/S5 Soft-off - Asserted."
+    ::= { serverAlertTrap 2256646 }
+
+--**************************************************************************
+-- Watchdog 2 Events (5 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (236F00h == 2322176)
+timerExpired NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Timer expired event."
+    ::= { serverAlertTrap 2322176 }
+
+-- Event Sensor Type, Event Type, Event Offset (236F01h == 2322177)
+hardReset NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Hard reset event."
+    ::= { serverAlertTrap 2322177 }
+
+-- Event Sensor Type, Event Type, Event Offset (236F02h == 2322178)
+powerDown NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power down event."
+    ::= { serverAlertTrap 2322178 }
+
+-- Event Sensor Type, Event Type, Event Offset (236F03h == 2322179)
+powerReset NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Power Reset event"
+    ::= { serverAlertTrap 2322179 }
+
+-- Event Sensor Type, Event Type, Event Offset (236F08h == 2322184)
+timerInterrupt NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  DESCRIPTION
+    "Timer Interrupt event."
+    ::= { serverAlertTrap 2322184 }
+
+--**************************************************************************
+-- System Event(10 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (126F01h == 1208065)
+oemSystemBootEvent NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "OEM System Boot event."
+    ::= { serverAlertTrap 1208065 }
+
+-- Event Sensor Type, Event Type, Event Offset (126F02h == 1208066)
+UndeterminedHardwareFailure NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Undetermined system hardware failure - Asserted."
+    ::= { serverAlertTrap 1208066 }
+
+-- Event Sensor Type, Event Type, Event Offset (126F05h == 1208069)
+alertTrapV1TimestampClockSync NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Timestamp Clock Synch - Asserted."
+    ::= { serverAlertTrap 1208069 }
+
+-- Event Sensor Type, Event Type, Event Offset (106F02h == 1076994)
+selLogAreaReset NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Log area reset / cleared"
+    ::= { serverAlertTrap 1076994 }
+
+-- Event Sensor Type, Event Type, Event Offset (106F04h == 1076996)
+SELFull NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "SEL Full"
+    ::= { serverAlertTrap 1076996 }
+
+-- Event Sensor Type, Event Type, Event Offset (106F05h == 1076997)
+SELAlmostFull NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "SEL Almost Full"
+    ::= { serverAlertTrap 1076997 }
+
+-- Event Sensor Type, Event Type, Event Offset (12EF01h == 1240833)
+oemSystemBootEventClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "OEM System Boot event - Deasserted."
+    ::= { serverAlertTrap 1240833 }
+
+-- Event Sensor Type, Event Type, Event Offset (12EF02h == 1240834)
+UndeterminedHardwareFailureClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Undetermined system hardware failure - Deasserted."
+    ::= { serverAlertTrap 1240834 }
+
+-- Event Sensor Type, Event Type, Event Offset (12EF05h == 1240837)
+alertTrapV1TimestampClockSyncClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Timestamp Clock Synch - Deasserted."
+    ::= { serverAlertTrap 1208069 }
+
+-- Event Sensor Type, Event Type, Event Offset (10EF02h == 1109762)
+selLogAreaResetClear NOTIFICATION-TYPE
+  OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+  STATUS  current
+  DESCRIPTION
+    "Log area reset / cleared - Deasserted"
+    ::= { serverAlertTrap 1109762 }
+
+--**************************************************************************
+-- SMI Timeout(2 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (03F301h == 258817)
+smiTimeoutError NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "SMI Timeout Assertion event."
+    ::= { serverAlertTrap 258817 }
+
+-- Event Sensor Type, Event Type, Event Offset (03F381h == 258945)
+smiTimeoutErrorDeassert NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "SMI Timeout Deassertion event."
+    ::= { serverAlertTrap 258945 }
+
+--**************************************************************************
+-- Drive Slot (Bay) Offsets (14 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F00h == 880384) 
+drivePresence NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Presence event - Asserted."
+    ::= { serverAlertTrap 880384 }
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F01h == 880385)
+driveFault NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Fault event - Asserted."
+    ::= { serverAlertTrap 880385 }
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F02h == 880386)
+drivePredictiveFailure NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Predictive Failure event - Asserted."
+    ::= { serverAlertTrap 880386 }
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F06h == 880390)
+driveInFailedArray NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive In Failed Array - Asserted."
+    ::= { serverAlertTrap 880390 }
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F07h == 880391)
+driveRebuild NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Rebuild event - Asserted."
+    ::= { serverAlertTrap 880391 }
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F08h == 880392)
+driveRebuildAborted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Rebuild/Remap Aborted (was not completed normally) - Asserted."
+    ::= { serverAlertTrap 880392 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF00h == 913152)
+drivePresenceClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Presence event - Deasserted."
+    ::= { serverAlertTrap 913152 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF01h == 913153)
+driveFaultClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Fault event - Deasserted."
+    ::= { serverAlertTrap 913153 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF02h == 913154)
+drivePredictiveFailureClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Predictive Failure event - Deasserted."
+    ::= { serverAlertTrap 913154 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF06h == 913158)
+driveInFailedArrayClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive In Failed Array - Deasserted."
+    ::= { serverAlertTrap 913158 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF07h == 913159)
+driveRebuildClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Rebuild event - Deasserted."
+    ::= { serverAlertTrap 913159 }
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF08h == 913160)
+driveRebuildAbortedClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Drive Rebuild/Remap Aborted (was not completed normally) - Deasserted."
+    ::= { serverAlertTrap 913160 }
+
+-- Event Sensor Type, Event Type, Event Offset (170801h == 1509377)
+AddinCardInserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Device Inserted / Device Present - Asserted."
+    ::= { serverAlertTrap 1509377 }
+
+-- Event Sensor Type, Event Type, Event Offset (170D01h == 1510657)
+AddinCardInsertedDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Device Inserted / Device Present - Deasserted."
+    ::= { serverAlertTrap 1510657 }
+
+--**************************************************************************
+-- Power Unit Offsets (9 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (096F00h == 618240)
+powerOffPowerUnit NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Power Off event - Asserted."
+    ::= { serverAlertTrap 618240 }
+
+-- Event Sensor Type, Event Type, Event Offset (096F04h == 618244)
+acLostPowerUnit NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit AC Lost event - Asserted."
+    ::= { serverAlertTrap 618244 }
+
+-- Event Sensor Type, Event Type, Event Offset (096F05h == 618245)
+softPowerControlPowerUnit NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Soft Power Control Failure event - Asserted."
+    ::= { serverAlertTrap 618245 }
+
+-- Event Sensor Type, Event Type, Event Offset (096F06h == 618246)
+powerUnitFailure NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Failure event - Asserted."
+    ::= { serverAlertTrap 618246 }
+
+-- Event Sensor Type, Event Type, Event Offset (09EF00h == 651008)
+powerOffPowerUnitClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Power Off event - Deasserted."
+    ::= { serverAlertTrap 651008 }
+
+-- Event Sensor Type, Event Type, Event Offset (09EF04h == 651012)
+acLostPowerUnitClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit AC Lost event - Deasserted."
+    ::= { serverAlertTrap 651012 }  
+
+-- Event Sensor Type, Event Type, Event Offset (09EF05h == 651013)
+softPowerControlPowerUnitClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Soft Power Control Failure event - Deasserted."
+    ::= { serverAlertTrap 651013 }
+
+-- Event Sensor Type, Event Type, Event Offset (09EF06h == 651014)
+powerUnitFailureClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Unit Failure event - Deasserted."
+    ::= { serverAlertTrap 651014 }
+
+ -- Event Sensor Type, Event Type, Event Offset (126F0F == 1208079)
+trapTestInstance NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "trap test"
+    ::= { serverAlertTrap 1208079 }
+
+--**************************************************************************
+-- Cable/Interconnect Event event(4 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (1B6F00h == 1797888)
+cableInterconnect NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cable/Interconnect is connected - Asserted."
+    ::= { serverAlertTrap 1797888 }
+
+-- Event Sensor Type, Event Type, Event Offset (1B6F01h == 1797889)
+cableConfigurationError NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Configuration Error - Incorrect cable connected / Incorrect interconnection - Asserted."
+    ::= { serverAlertTrap 1797889 }
+
+-- Event Sensor Type, Event Type, Event Offset (1BEF00h == 1830656)
+cableInterconnectClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cable/Interconnect is connected - Deasserted."
+    ::= { serverAlertTrap 1830656 }
+
+-- Event Sensor Type, Event Type, Event Offset (1BEF01h == 1830657)
+cableConfigurationErrorClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Configuration Error - Incorrect cable connected / Incorrect interconnection - Deasserted."
+    ::= { serverAlertTrap 1830657 }
+
+--**************************************************************************
+-- CPU CPUS event
+--**************************************************************************	
+
+-- Event Sensor Type, Event Type, Event Offset (C00157h == 12583255)
+cupsUpperNonCriticalGoingHigh NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper non-critical going high - Asserted."
+    ::= { serverAlertTrap 12583255 }
+
+-- Event Sensor Type, Event Type, Event Offset (C00159h == 12583257)
+cupsUpperCriticalGoingHigh NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper critical going high - Asserted."
+    ::= { serverAlertTrap 12583257 }
+
+-- Event Sensor Type, Event Type, Event Offset (C0015Bh == 12583259)
+cupsUpperNonRecoverableGoingHigh NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper non-recoverable going high - Asserted."
+    ::= { serverAlertTrap 12583259 }
+
+-- Event Sensor Type, Event Type, Event Offset (C08157h == 12616023)
+cupsUpperNonCriticalGoingHighClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper non-critical going high - Deasserted."
+    ::= { serverAlertTrap 12616023 }
+
+-- Event Sensor Type, Event Type, Event Offset (C08159h == 12616025)
+cupsUpperCriticalGoingHighClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper critical going high - Deasserted."
+    ::= { serverAlertTrap 12616025 }
+
+-- Event Sensor Type, Event Type, Event Offset (C0815Bh == 12616027)
+cupsUpperNonRecoverableGoingHighClear NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Cups upper non-recoverable going high - Deasserted."
+    ::= { serverAlertTrap 12616027 }
+
+-- Event Sensor Type, Event Type, Event Offset (146F00h == 1339136)
+alertTrapV1PowerButtonPressed NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power button pressed -Asserted."
+    ::= { serverAlertTrap 1339136 }
+
+-- Event Sensor Type, Event Type, Event Offset (14EF00h == 1371904)
+alertTrapV1PowerButtonReleased NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Power Button pressed -Deasserted."
+    ::= { serverAlertTrap 1371904 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F00h == 1928960)
+alertTrapV1SysPowerUpAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by power up -Asserted."
+    ::= { serverAlertTrap 1928960 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F01h == 1928961)
+alertTrapV1SysHardResetAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by hard reset -Asserted."
+    ::= { serverAlertTrap 1928961 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F02h == 1928962)
+alertTrapV1SysWarmResetAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by warm reset -Asserted."
+    ::= { serverAlertTrap 1928962 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F03h == 1928963)
+alertTrapV1SysRequestedPXEBoot NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "User requested PXE boot -Asserted."
+    ::= { serverAlertTrap 1928963 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F07h == 1928967)
+alertTrapV1SysRestartUnknownAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "system restart unknown -Asserted."
+    ::= { serverAlertTrap 1928967 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF00h == 1961728)
+alertTrapV1SysPowerUpDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by power up -Deasserted."
+    ::= { serverAlertTrap 1961728 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF01h == 1961729)
+alertTrapV1SysHardResetDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by hard reset -Deasserted."
+    ::= { serverAlertTrap 1961729 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF02h == 1961730)
+alertTrapV1SysWarmResetDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Initiated by warm reset -Deasserted."
+    ::= { serverAlertTrap 1961730 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF03h == 1961731)
+alertTrapV1SysRequestedPXEBootDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "User requested PXE boot -Deasserted."
+    ::= { serverAlertTrap 1961731 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF07h == 1961735)
+alertTrapV1SysRestartUnknownDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "system restart unknown -Deasserted."
+    ::= { serverAlertTrap 1961735 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D7007h == 1929223)
+alertTrapV1SysRestartChassisCtrlAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "system restart Chassis Control command -Asserted."
+    ::= { serverAlertTrap 1929223 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DC007h == 1949703)
+alertTrapV1SysRestartChassisCtrlDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "system restart Chassis Control command -Deasserted."
+    ::= { serverAlertTrap 1949703 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D7107h == 1929479)
+alertTrapV1SysRestartButtonAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "System Restart reset via pushbutton -Asserted."
+    ::= { serverAlertTrap 1929479 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DC107h == 1949959)
+alertTrapV1SysRestartButtonDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "System Restart reset via pushbutton -Deasserted."
+    ::= { serverAlertTrap 1949959 }
+
+-- Event Sensor Type, Event Type, Event Offset (1D7907h == 1931527)
+alertTrapV1SysRestartSoftAsserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "System Restart via soft reset -Asserted."
+    ::= { serverAlertTrap 1931527 }
+
+-- Event Sensor Type, Event Type, Event Offset (1DC907h == 1952007)
+alertTrapV1SysRestartSoftDeasserted NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "System Restart via soft reset -Deasserted."
+    ::= { serverAlertTrap 1952007 }
+
+-- Event Sensor Type, Event Type, Event Offset (C10701h == 12650241)
+alertTrapV1BMCOEMEvent  NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Transition to Non-Critical from OK -Asserted."
+    ::= { serverAlertTrap 12650241 }
+
+-- Event Sensor Type, Event Type, Event Offset (C18701h == 12683009)
+alertTrapV1BMCOEMEvent  NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Transition to Non-Critical from OK -Deasserted."
+    ::= { serverAlertTrap 12683009 }
+
+-- Event Sensor Type, Event Type, Event Offset (160301h == 1442561)
+IPMICMD  NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "State Asserted."
+    ::= { serverAlertTrap 1442561 }
+
+-- Event Sensor Type, Event Type, Event Offset (160901h == 1444097)
+BMCStart  NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "Device Enabled -Asserted."
+    ::= { serverAlertTrap 1444097 }
+
+-- Event Sensor Type, Event Type, Event Offset (1F6F05h == 2060037)
+BIOSPostReady NOTIFICATION-TYPE
+    OBJECTS  {   Severity, State, PartName, PartSN, SN, Description, ExtraDsc }
+    STATUS  current
+    DESCRIPTION
+        "ROM boot completed."
+    ::= { serverAlertTrap 2060037 }
+
+wired-for-management  OBJECT IDENTIFIER ::= {device 3183}
+pet     OBJECT IDENTIFIER ::= {wired-for-management 1}
+--**************************************************************************
+--*    Notifications (using SNMPv1 TRAP-TYPE constructs for maximum
+--*     compatibility with deployed SNMP managers).
+--**************************************************************************
+
+pet-events    OBJECT IDENTIFIER ::= {pet 1}
+--**************************************************************************
+-- Temperature Sensor Events (18 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (010150h == 65872)
+tempTrapV1LowerNonCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going low. - Asserted"
+    ::= 65872
+
+-- Event Sensor Type, Event Type, Event Offset (010151h == 65873)
+tempTrapV1LowerNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going high. - Asserted"
+    ::= 65873
+
+-- Event Sensor Type, Event Type, Event Offset (010152h == 65874)
+tempTrapV1LowerCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going low. - Asserted"
+    ::= 65874
+
+-- Event Sensor Type, Event Type, Event Offset (010153h == 65875)
+tempTrapV1LowerCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going high. - Asserted"
+    ::= 65875
+
+-- Event Sensor Type, Event Type, Event Offset (010156h == 65878)
+tempTrapV1UpperNonCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going low. - Asserted"
+    ::= 65878
+
+-- Event Sensor Type, Event Type, Event Offset (010157h == 65879)
+tempTrapV1UpperNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going high. - Asserted"
+    ::= 65879
+
+-- Event Sensor Type, Event Type, Event Offset (010158h == 65880)
+tempTrapV1UpperCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going low. - Asserted"
+    ::= 65880
+
+-- Event Sensor Type, Event Type, Event Offset (010159h == 65881)
+tempTrapV1UpperCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going high. - Asserted"
+    ::= 65881
+
+-- Event Sensor Type, Event Type, Event Offset (01015Bh == 65883)
+tempTrapV1UpperNonRecoverableGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-recoverable threshold, going high. - Asserted"
+    ::= 65883
+
+-- Event Sensor Type, Event Type, Event Offset (018150h == 98640)
+tempTrapV1LowerNonCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going low. - Deasserted"
+    ::= 98640
+
+-- Event Sensor Type, Event Type, Event Offset (018151h == 98641)
+tempTrapV1LowerNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower non-critical threshold, going high. - Deasserted"
+    ::= 98641
+
+-- Event Sensor Type, Event Type, Event Offset (018152h == 98642)
+tempTrapV1LowerCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going low. - Deasserted"
+    ::= 98642
+
+-- Event Sensor Type, Event Type, Event Offset (018153h == 98643)
+tempTrapV1LowerCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed lower critical threshold, going high. - Deasserted"
+    ::= 98643
+
+-- Event Sensor Type, Event Type, Event Offset (018156h == 98646)
+tempTrapV1UpperNonCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going low. - Deasserted"
+    ::= 98646
+
+-- Event Sensor Type, Event Type, Event Offset (018157h == 98647)
+tempTrapV1UpperNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-critical threshold, going high. - Deasserted"
+    ::= 98647
+
+-- Event Sensor Type, Event Type, Event Offset (018158h == 98648)
+tempTrapV1UpperCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going low. - Deasserted"
+    ::= 98648
+
+-- Event Sensor Type, Event Type, Event Offset (018159h == 98649)
+tempTrapV1UpperCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper critical threshold, going high. - Deasserted"
+    ::= 98649
+
+-- Event Sensor Type, Event Type, Event Offset (01815Bh == 98651)
+tempTrapV1UpperNonRecoverableGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Temperature sensor crossed upper non-recoverable threshold, going high. - Deasserted"
+    ::= 98651
+
+--**************************************************************************
+-- Voltage Sensor Events (16 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (020150h == 131408)
+voltageTrapV1LowerNonCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going low - Asserted."
+    ::= 131408
+
+-- Event Sensor Type, Event Type, Event Offset (020151h == 131409)
+voltageTrapV1LowerNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going high - Asserted."
+    ::= 131409
+
+-- Event Sensor Type, Event Type, Event Offset (020152h == 131410)
+voltageTrapV1LowerCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going low - Asserted."
+    ::= 131410
+
+-- Event Sensor Type, Event Type, Event Offset (020153h == 131411)
+voltageTrapV1LowerCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going high - Asserted."
+    ::= 131411
+
+-- Event Sensor Type, Event Type, Event Offset (020154h == 131412)
+voltageTrapV1LowerNonRecoverableGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower non-recoverable threshold, going low - Asserted."
+    ::= 131412
+
+-- Event Sensor Type, Event Type, Event Offset (020156h == 131414)
+voltageTrapV1UpperNonCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going low - Asserted."
+    ::= 131414
+
+-- Event Sensor Type, Event Type, Event Offset (020157h == 131415)
+voltageTrapV1UpperNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= 131415
+
+-- Event Sensor Type, Event Type, Event Offset (020158h == 131416)
+voltageTrapV1UpperCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going low - Asserted."
+    ::= 131416
+
+-- Event Sensor Type, Event Type, Event Offset (020159h == 131417)
+voltageTrapV1UpperCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going high - Asserted."
+    ::= 131417
+
+-- Event Sensor Type, Event Type, Event Offset (02015Bh == 131419)
+voltageTrapV1UpperNonRecoverableGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= 131419
+
+-- Event Sensor Type, Event Type, Event Offset (028150h == 164176)
+voltageTrapV1LowerNonCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going low - Deasserted."
+    ::= 164176
+
+-- Event Sensor Type, Event Type, Event Offset (028151h == 164177)
+voltageTrapV1LowerNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower non-critical threshold, going high - Deasserted."
+    ::= 164177
+
+-- Event Sensor Type, Event Type, Event Offset (028152h == 164178)
+voltageTrapV1LowerCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going low - Deasserted."
+    ::= 164178
+
+-- Event Sensor Type, Event Type, Event Offset (028153h == 164179)
+voltageTrapV1LowerCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed lower critical threshold, going high - Deasserted."
+    ::= 164179
+
+-- Event Sensor Type, Event Type, Event Offset (028154h == 164180)
+voltageTrapV1UpperNonRecoverableGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going low - Deasserted."
+    ::= 164180
+
+-- Event Sensor Type, Event Type, Event Offset (028156h == 164182)
+voltageTrapV1UpperNonCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going low - Deasserted."
+    ::= 164182
+
+-- Event Sensor Type, Event Type, Event Offset (028157h == 164183)
+voltageTrapV1UpperNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= 164183
+
+-- Event Sensor Type, Event Type, Event Offset (028158h == 164184)
+voltageTrapV1UpperCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going low - Deasserted."
+    ::= 164184
+
+-- Event Sensor Type, Event Type, Event Offset (028159h == 164185)
+voltageTrapV1UpperCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper critical threshold, going high - Deasserted."
+    ::= 164185
+
+-- Event Sensor Type, Event Type, Event Offset (02815Bh == 164187)
+voltageTrapV1UpperNonRecoverableGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Voltage sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= 164187
+
+--**************************************************************************
+-- Current Sensor Events ( 6 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (030157h == 196951)
+currentTrapV1UpperNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= 196951
+
+-- Event Sensor Type, Event Type, Event Offset (030159h == 196953)
+currentTrapV1UpperCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper critical threshold, going high - Asserted."
+    ::= 196953
+
+-- Event Sensor Type, Event Type, Event Offset (03015Bh == 196955)
+currentTrapV1UpperNonRecoverableGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= 196955
+
+-- Event Sensor Type, Event Type, Event Offset (038157h == 229719)
+currentTrapV1UpperNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= 229719
+
+-- Event Sensor Type, Event Type, Event Offset (038159h == 229721)
+currentTrapV1UpperCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper critical threshold, going high - Deasserted."
+    ::= 229721
+
+-- Event Sensor Type, Event Type, Event Offset (03815Bh == 229723)
+currentTrapV1UpperNonRecoverableGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Current sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= 229723
+
+--**************************************************************************
+-- Fan Failure Events (10 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (040150h == 262480)
+fanFailureLowerNonCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going low - Asserted."
+    ::= 262480
+
+-- Event Sensor Type, Event Type, Event Offset (040151h == 262481)
+fanFailureLowerNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going high - Asserted."
+    ::= 262481
+
+-- Event Sensor Type, Event Type, Event Offset (040152h == 262482)
+fanFailureLowerCriticalGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going low - Asserted."
+    ::= 262482
+
+-- Event Sensor Type, Event Type, Event Offset (040153h == 262483)
+fanFailureLowerCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going high - Asserted."
+    ::= 262483
+
+-- Event Sensor Type, Event Type, Event Offset (040154h == 262484)
+fanFailureLowerNonRecoverableGoingLow TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-recoverable threshold, going low - Asserted."
+    ::= 262484
+
+-- Event Sensor Type, Event Type, Event Offset (048150h == 295248)
+fanFailureLowerNonCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going low - Deasserted."
+    ::= 295248
+
+-- Event Sensor Type, Event Type, Event Offset (048151h == 295249)
+fanFailureLowerNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-critical threshold, going high - Deasserted."
+    ::= 295249
+
+-- Event Sensor Type, Event Type, Event Offset (048152h == 295250)
+fanFailureLowerCriticalGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going low - Deasserted."
+    ::= 295250
+
+-- Event Sensor Type, Event Type, Event Offset (048153h == 295251)
+fanFailureLowerCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower critical threshold, going high - Deasserted."
+    ::= 295251
+
+-- Event Sensor Type, Event Type, Event Offset (048154h == 295252)
+fanFailureLowerNonRecoverableGoingLowClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan sensor crossed lower non-recoverable threshold, going low - Deasserted."
+    ::= 295252
+
+--**************************************************************************
+-- Fan Supply Fault Events (3 of them)
+--**************************************************************************	
+
+-- Event Sensor Type, Event Type, Event Offset (040802h == 264192)
+fandeviceAbsence TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan device removed/absent event - Asserted."
+    ::= 264192
+
+-- Event Sensor Type, Event Type, Event Offset (048800h == 296960)
+fandevicePresence TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan device removed/absent event - Desserted."
+    ::= 296960
+
+-- Event Sensor Type, Event Type, Event Offset (04080Dh == 264205)
+powerdeviceHotPlug TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Fan device hot plug event - Asserted."
+    ::= 264205
+
+--**************************************************************************
+-- Chassis Intrusion Event(4 of them)
+--**************************************************************************
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset 00h (056F00h == 356096)
+chassisIntrusionEvent TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "A Chassis Intrusion assertion event."
+    ::= 356096
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset 04h (056F04h == 356100)
+chassisIntrusionEventLANLeashLost TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "A Chassis Intrusion LAN leash lost assertion event."
+    ::= 356100
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset 00h (05EF00h == 388864)
+chassisIntrusionEventClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "A Chassis Intrusion Deassertion event."
+    ::= 388864
+
+-- Event Sensor Type 05h, Event Type 6fh, Event Offset 04h (05EF04h == 388868)
+chassisIntrusionEventLANLeashLostClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "A Chassis Intrusion LAN leash lost de-assertion event."
+    ::= 388868
+
+--**************************************************************************
+-- Power Sensor Events ( 6 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (080157h == 524631)
+powerTrapV1UpperNonCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper non-critical threshold, going high - Asserted."
+    ::= 524631
+
+-- Event Sensor Type, Event Type, Event Offset (080159h == 524633)
+powerTrapV1UpperCriticalGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper critical threshold, going high - Asserted."
+    ::= 524633
+
+-- Event Sensor Type, Event Type, Event Offset (08015Bh == 524635)
+powerTrapV1UpperNonRecoverableGoingHigh TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper non-recoverable threshold, going high - Asserted."
+    ::= 524635
+
+-- Event Sensor Type, Event Type, Event Offset (088157h == 557399)
+powerTrapV1UpperNonCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper non-critical threshold, going high - Deasserted."
+    ::= 557399
+
+-- Event Sensor Type, Event Type, Event Offset (088159h == 557401)
+powerTrapV1UpperCriticalGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper critical threshold, going high - Deasserted."
+    ::= 557401
+
+-- Event Sensor Type, Event Type, Event Offset (08815Bh == 557403)
+powerTrapV1UpperNonRecoverableGoingHighClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power sensor crossed upper non-recoverable threshold, going high - Deasserted."
+    ::= 557403
+
+--**************************************************************************
+-- Power Supply Fault Events (11 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (086F00h == 552704)
+powerSupplyPresence TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power supply presence event - Asserted."
+    ::= 552704
+
+-- Event Sensor Type, Event Type, Event Offset (086F01h == 552705)
+powerSupplyFailure TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply failure event - Asserted."
+    ::= 552705
+
+-- Event Sensor Type, Event Type, Event Offset (086F02h == 552706)
+powerSupplyPredictiveFailure TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply predictive failure event - Asserted."
+    ::= 552706
+
+-- Event Sensor Type, Event Type, Event Offset (086F03h == 552707)
+powerSupplyACLost TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply A/C lost event - Asserted."
+    ::= 552707
+
+-- Event Sensor Type, Event Type, Event Offset (086F06h == 552710)
+powerSupplyConfigurationError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply configuration error event - Asserted."
+    ::= 552710
+
+-- Event Sensor Type, Event Type, Event Offset (086F0Dh == 552717)
+powerSupplyHotPlug TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply hot plug event - Asserted."
+    ::= 552717
+
+-- Event Sensor Type, Event Type, Event Offset (08EF00h == 585472)
+powerSupplyPresenceClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power supply presence event - Deasserted."
+    ::= 585472
+
+-- Event Sensor Type, Event Type, Event Offset (08EF01h == 585473)
+powerSupplyFailureClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply failure event - Deasserted."
+    ::= 585473
+
+-- Event Sensor Type, Event Type, Event Offset (08EF02h == 585474)
+powerSupplyPredictiveFailureClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply predictive failure event - Deasserted."
+    ::= 585474
+
+-- Event Sensor Type, Event Type, Event Offset (08EF03h == 585475)
+powerSupplyACLostClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply A/C lost event - Deasserted."
+    ::= 585475
+
+-- Event Sensor Type, Event Type, Event Offset (08EF06h == 585478)
+powerSupplyConfigurationErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power supply configuration error event - Deasserted."
+    ::= 585478
+
+--**************************************************************************
+-- Uncorrectable ECC Error Event(7 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F00h == 814848)
+correctableECCError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Correctable ECC error event - Asserted."
+    ::= 814848
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F01h == 814849)
+uncorrectableECCError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Uncorrectable ECC error event - Asserted."
+    ::= 814849
+
+-- Event Sensor Type, Event Type, Event Offset (0CEF00h == 847616)
+correctableECCErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Correctable ECC error event - Deasserted."
+    ::= 847616
+
+-- Event Sensor Type, Event Type, Event Offset (0CEF01h == 847617)
+uncorrectableECCErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Uncorrectable ECC error event - Deasserted."
+    ::= 847617
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F06h == 814854)
+alertTrapV1MemoryPresence TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Presence detected - Asserted."
+    ::= 814854
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F09h == 814859)
+alertTrapV1MemoryMRCTraining TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Memory MRC training warning event - Asserted."
+    ::= 814859
+
+-- Event Sensor Type, Event Type, Event Offset (0C6F0Ch == 814860)
+alertTrapV1MemoryMRC TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Memory MRC DRAM memtest errors - Asserted."
+    ::= 814860
+
+--**************************************************************************
+-- POST Error Event(2 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0F6F00h == 1011456)
+postError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power On Self Test (POST) error event - Asserted."
+    ::= 1011456
+
+-- Event Sensor Type, Event Type, Event Offset (0FEF00h == 1044224)
+postErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power On Self Test (POST) error event - Deasserted."
+    ::= 1044224
+
+--**************************************************************************
+-- Processor Failure Events (10 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (076F01h == 487169)
+thermalTripError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Thermal Trip error event - Asserted."
+    ::= 487169
+
+-- Event Sensor Type, Event Type, Event Offset (076F07h == 487175)
+cpuPresence TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Processor Presence - Asserted"
+    ::= 487175
+
+-- Event Sensor Type, Event Type, Event Offset (076F08h == 487176)
+cpuDisabled TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Processor Disabled - Asserted"
+    ::= 487176
+
+-- Event Sensor Type, Event Type, Event Offset (076FABh == 487339)
+ProcessorCheckUncorrectable TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Asserted"
+    ::= 487339
+
+-- Event Sensor Type, Event Type, Event Offset (076FACh == 487340)
+ProcessorCheckError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Correctable Machine Check Error - Asserted"
+    ::= 487340
+
+-- Event Sensor Type, Event Type, Event Offset (070301h == 459521)
+procDisabledError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "CATERR Event Detected - Asserted."
+    ::= 459521
+
+-- Event Sensor Type, Event Type, Event Offset (07EF01h == 519937)
+thermalTripErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Thermal Trip error event - Deasserted."
+    ::= 519937
+
+-- Event Sensor Type, Event Type, Event Offset (07EF07h == 519943)
+cpuPresenceClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Processor Presence - Deasserted"
+    ::= 519943
+
+-- Event Sensor Type, Event Type, Event Offset (07EF08h == 519944)
+cpuDisabledClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Processor Disabled - Deasserted"
+    ::= 519944
+
+-- Event Sensor Type, Event Type, Event Offset (07EFABh == 520107)
+ProcessorCheckUncorrectableClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Machine Check Exception (Uncorrectable) - Deasserted"
+    ::= 520107
+
+-- Event Sensor Type, Event Type, Event Offset (07EFACh == 520108)
+ProcessorCheckErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Correctable Machine Check Error - Deasserted"
+    ::= 520108
+
+-- Event Sensor Type, Event Type, Event Offset (078301h == 492289)
+procDisabledErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "CATERR Event Detected - Deasserted."
+    ::= 492289
+
+--**************************************************************************
+-- Critical Interrupt Events (4 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (136F00h == 1273600)
+fatalNMIError TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Front Panel NMI Assertion event - Asserted."
+    ::= 1273600
+
+-- Event Sensor Type, Event Type, Event Offset (136FA4h == 1273764)
+PCIPERR TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "PCI PERR event - Asserted."
+    ::= 1273764
+
+-- Event Sensor Type, Event Type, Event Offset (136FA5h == 1273765)
+PCISERR TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "PCI SERR event - Asserted."
+    ::= 1273765
+	
+-- Event Sensor Type, Event Type, Event Offset (13EF00h == 1306368)
+fatalNMIErrorClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Front Panel NMI Assertion event - Deasserted."
+    ::= 1306368
+
+-- Event Sensor Type, Event Type, Event Offset (13EFA4h == 1306532)
+PCIPERRClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "PCI PERR event - Deasserted."
+    ::= 1306532
+
+-- Event Sensor Type, Event Type, Event Offset (13EFA5h == 1306533)
+PCISERRClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "PCI SERR event - Deasserted."
+    ::= 1306533
+	
+--**************************************************************************
+-- PWR Events (3 of them)
+--**************************************************************************	
+
+-- Event Sensor Type, Event Type, Event Offset (226F00h == 2256640)
+powerStateWorking TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "S0/G0 Working - Asserted."
+    ::= 2256640
+
+-- Event Sensor Type, Event Type, Event Offset (226F05h == 2256645)
+powerStateS5SoftOff TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "S5/G2 Soft-off - Asserted."
+    ::= 2256645
+
+-- Event Sensor Type, Event Type, Event Offset (226F05h == 2256645)
+powerStateS4SoftOff TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "S4/S5 Soft-off - Asserted."
+    ::= 2256646
+
+--**************************************************************************
+-- Watchdog 2 Events (5 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (236F00h == 2322176)
+timerExpired TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Timer expired event."
+    ::= 2322176
+
+-- Event Sensor Type, Event Type, Event Offset (236F01h == 2322177)
+hardReset TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Hard reset event."
+    ::= 2322177
+
+-- Event Sensor Type, Event Type, Event Offset (236F02h == 2322178)
+powerDown TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power down event."
+    ::= 2322178
+
+-- Event Sensor Type, Event Type, Event Offset (236F03h == 2322179)
+powerReset TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Power Reset event"
+    ::= 2322179
+
+-- Event Sensor Type, Event Type, Event Offset (236F08h == 2322184)
+timerInterrupt TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Timer Interrupt event."
+    ::= 2322184
+
+--**************************************************************************
+-- System Event(5 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (126F01h == 1208065)
+oemSystemBootEvent TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "OEM System Boot event."
+    ::= 1208065
+
+-- Event Sensor Type, Event Type, Event Offset (126F05h == 1208069)
+alertTrapV1TimestampClockSync TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Timestamp Clock Synch - Asserted."
+    ::= 1208069
+
+-- Event Sensor Type, Event Type, Event Offset (106F02h == 1076994)
+selLogAreaReset TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Log area reset / cleared"
+    ::= 1076994
+
+-- Event Sensor Type, Event Type, Event Offset (12EF01h == 1240833)
+oemSystemBootEventClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "OEM System Boot event - Deasserted."
+    ::= 1240833
+
+-- Event Sensor Type, Event Type, Event Offset (10EF02h == 1109762)
+selLogAreaResetClear TRAP-TYPE
+  ENTERPRISE  pet-events
+  DESCRIPTION
+    "Log area reset / cleared - Deasserted"
+    ::= 1109762
+
+--**************************************************************************
+-- SMI Timeout(2 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (03F301h == 258817)
+smiTimeoutError TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "SMI Timeout Assertion event."
+    ::= 258817
+
+-- Event Sensor Type, Event Type, Event Offset (03F381h == 258945)
+smiTimeoutErrorDeassert TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "SMI Timeout Deassertion event."
+    ::= 258945
+
+--**************************************************************************
+-- Drive Slot (Bay) Offsets (8 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F00h == 880384)
+drivePresence TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Presence event - Asserted."
+    ::= 880384
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F01h == 880385)
+driveFault TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Fault event - Asserted."
+    ::= 880385
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F02h == 880386)
+drivePredictiveFailure TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Predictive Failure event - Asserted."
+    ::= 880386
+
+-- Event Sensor Type, Event Type, Event Offset (0D6F07h == 880391)
+driveRebuild TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Rebuild event - Asserted."
+    ::= 880391
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF00h == 913152)
+drivePresenceClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Presence event - Deasserted."
+    ::= 913152
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF01h == 913153)
+driveFaultClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Fault event - Deasserted."
+    ::= 913153
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF02h == 913154)
+drivePredictiveFailureClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Predictive Failure event - Deasserted."
+    ::= 913154
+
+-- Event Sensor Type, Event Type, Event Offset (0DEF07h == 913159)
+driveRebuildClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Drive Rebuild event - Deasserted."
+    ::= 913159
+
+--**************************************************************************
+-- Power Unit Offsets (9 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (096F00h == 618240)
+powerOffPowerUnit TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Power Off event - Asserted."
+    ::= 618240
+
+-- Event Sensor Type, Event Type, Event Offset (096F04h == 618244)
+acLostPowerUnit TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit AC Lost event - Asserted."
+    ::= 618244
+
+-- Event Sensor Type, Event Type, Event Offset (096F05h == 618245)
+softPowerControlPowerUnit TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Soft Power Control Failure event - Asserted."
+    ::= 618245
+
+-- Event Sensor Type, Event Type, Event Offset (096F06h == 618246)
+powerUnitFailure TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Failure event - Asserted."
+    ::= 618246
+
+-- Event Sensor Type, Event Type, Event Offset (09EF00h == 651008)
+powerOffPowerUnitClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Power Off event - Deasserted."
+    ::= 651008
+
+-- Event Sensor Type, Event Type, Event Offset (09EF04h == 651012)
+acLostPowerUnitClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit AC Lost event - Deasserted."
+    ::= 651012
+
+-- Event Sensor Type, Event Type, Event Offset (09EF05h == 651013)
+softPowerControlPowerUnitClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Soft Power Control Failure event - Deasserted."
+    ::= 651013
+
+-- Event Sensor Type, Event Type, Event Offset (09EF05h == 651014)
+powerUnitFailureClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Unit Failure event - Deasserted."
+    ::= 651014
+
+ -- Event Sensor Type, Event Type, Event Offset
+trapTestInstance TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "trap test"
+    ::= 1208079 
+
+--**************************************************************************
+-- Cable/Interconnect Event event(2 of them)
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (1B6F00h == 1797888)
+cableInterconnect TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cable/Interconnect is connected - Asserted."
+    ::= 1797888  
+
+-- Event Sensor Type, Event Type, Event Offset (1BEF00h == 1830656)
+cableInterconnectClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cable/Interconnect is connected - Deasserted."
+    ::= 1830656
+
+--**************************************************************************
+-- CPU CPUS event
+--**************************************************************************
+
+-- Event Sensor Type, Event Type, Event Offset (C0015Bh == 12583259)
+cupsUpperNonRecoverableGoingHigh TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper non-recoverable going high - Asserted."
+    ::= 12583259
+
+-- Event Sensor Type, Event Type, Event Offset (C00159h == 12583257)
+cupsUpperCriticalGoingHigh TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper critical going high - Asserted."
+    ::= 12583257
+
+-- Event Sensor Type, Event Type, Event Offset (C00157h == 12583255)
+cupsUpperNonCriticalGoingHigh TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper non-critical going high - Asserted."
+    ::= 12583255
+
+-- Event Sensor Type, Event Type, Event Offset (C0815Bh == 12616027)
+cupsUpperNonRecoverableGoingHighClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper non-recoverable going high - Deasserted."
+    ::= 12616027
+
+-- Event Sensor Type, Event Type, Event Offset (C08159h == 12616025)
+cupsUpperCriticalGoingHighClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper critical going high - Deasserted."
+    ::= 12616025
+
+-- Event Sensor Type, Event Type, Event Offset (C08157h == 12616023)
+cupsUpperNonCriticalGoingHighClear TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Cups upper non-critical going high - Deasserted."
+    ::= 12616023
+
+-- Event Sensor Type, Event Type, Event Offset (146F00h == 1339136)
+alertTrapV1PowerButtonPressed TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power button pressed -Asserted."
+    ::= 1339136
+
+-- Event Sensor Type, Event Type, Event Offset (14EF00h == 1371904)
+alertTrapV1PowerButtonReleased TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Power Button pressed -Deasserted."
+    ::= 1371904
+
+-- Event Sensor Type, Event Type, Event Offset (1D6F07h == 1928967)
+alertTrapV1SysRestartUnknownAsserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "system restart unknown -Asserted."
+    ::= 1928967
+
+-- Event Sensor Type, Event Type, Event Offset (1DEF07h == 1961735)
+alertTrapV1SysRestartUnknownDeasserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "system restart unknown -Deasserted."
+    ::= 1961735
+
+-- Event Sensor Type, Event Type, Event Offset (1D7007h == 1929223)
+alertTrapV1SysRestartChassisCtrlAsserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "system restart Chassis Control command -Asserted."
+    ::= 1929223
+
+-- Event Sensor Type, Event Type, Event Offset (1DC007h == 1949703)
+alertTrapV1SysRestartChassisCtrlDeasserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "system restart Chassis Control command -Deasserted."
+    ::= 1949703
+
+-- Event Sensor Type, Event Type, Event Offset (1D7107h == 1929479)
+alertTrapV1SysRestartButtonAsserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "System Restart reset via pushbutton -Asserted."
+    ::= 1929479
+
+-- Event Sensor Type, Event Type, Event Offset (1DC107h == 1949959)
+alertTrapV1SysRestartButtonDeasserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "System Restart reset via pushbutton -Deasserted."
+    ::= 1949959
+
+-- Event Sensor Type, Event Type, Event Offset (1D7907h == 1931527)
+alertTrapV1SysRestartSoftAsserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "System Restart via soft reset -Asserted."
+    ::= 1931527
+
+-- Event Sensor Type, Event Type, Event Offset (1DC907h == 1952007)
+alertTrapV1SysRestartSoftDeasserted TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "System Restart via soft reset -Deasserted."
+    ::= 1952007
+
+-- Event Sensor Type, Event Type, Event Offset (C10701h == 12650241)
+alertTrapV1BMCOEMEvent TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Transition to Non-Critical from OK -Asserted."
+    ::= 12650241
+
+-- Event Sensor Type, Event Type, Event Offset (C18701h == 12683009)
+alertTrapV1BMCOEMEvent TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Transition to Non-Critical from OK -Deasserted."
+    ::= 12683009
+
+-- Event Sensor Type, Event Type, Event Offset (160301h == 1442561)
+IPMICMD TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "State Asserted."
+    ::= 1442561
+
+-- Event Sensor Type, Event Type, Event Offset (160901h == 1444097)
+BMCStart TRAP-TYPE
+    ENTERPRISE  pet-events
+    DESCRIPTION
+        "Device Enabled -Asserted."
+    ::= 1444097
+END

@@ -1,0 +1,44 @@
+SIMPLE-TEST DEFINITIONS ::= BEGIN
+
+simpleRoot OBJECT IDENTIFIER ::= { 1 3 6 1 4 1 88888 }
+
+simpleHealth OBJECT IDENTIFIER ::= { simpleRoot 1 }
+
+simpleHealthStatus OBJECT-TYPE
+    SYNTAX     OCTET STRING
+    MAX-ACCESS read-only
+    STATUS     current
+    DESCRIPTION "Overall system health"
+    ::= { simpleHealth 1 }
+
+simpleTemperature OBJECT-TYPE
+    SYNTAX     INTEGER
+    MAX-ACCESS read-only
+    STATUS     current
+    DESCRIPTION "System temperature"
+    ::= { simpleHealth 2 }
+
+simpleModel OBJECT-TYPE
+    SYNTAX     OCTET STRING
+    MAX-ACCESS read-only
+    STATUS     current
+    DESCRIPTION "Device model name"
+    ::= { simpleHealth 3 }
+
+simpleFanTable OBJECT IDENTIFIER ::= { simpleRoot 2 }
+
+simpleFanHealth OBJECT-TYPE
+    SYNTAX     OCTET STRING
+    MAX-ACCESS read-only
+    STATUS     current
+    DESCRIPTION "Fan health status"
+    ::= { simpleFanTable 1 }
+
+simpleFanSpeed OBJECT-TYPE
+    SYNTAX     INTEGER
+    MAX-ACCESS read-only
+    STATUS     current
+    DESCRIPTION "Fan speed in RPM"
+    ::= { simpleFanTable 2 }
+
+END

@@ -1,0 +1,11 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+pydantic==2.5.2
+lxml==5.1.0
+pysnmp==4.4.12
+pysmi==1.5.11
+pyasn1==0.4.8
+pyasyncore
+pyasynchat
+aiofiles==23.2.1
